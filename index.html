@@ -13,37 +13,17 @@
 
 <style>
   :root {
-    --navy-900: #0A1D3A;
-    --navy-800: #102849;
-    --navy-700: #17345c;
-    --gold:     #C9A227;
-    --gold-lt:  #E4C35A;
-    --cream:    #F5F1E6;
-    --slate:    #93A0B5;
-    --danger:   #E06D6D;
-    --ok:       #6FBF8B;
-    --wa:       #25D366;
+    --navy-900: #0A1D3A; --navy-800: #102849; --navy-700: #17345c;
+    --gold: #C9A227; --gold-lt: #E4C35A; --cream: #F5F1E6; --slate: #93A0B5;
+    --danger: #E06D6D; --ok: #6FBF8B; --wa: #25D366;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: "Inter", system-ui, sans-serif;
-    background: radial-gradient(1200px 600px at 80% -10%, rgba(201,162,39,0.10), transparent 60%), var(--navy-900);
-    color: var(--cream); min-height: 100vh; -webkit-font-smoothing: antialiased;
-  }
-  .wordmark-bg {
-    position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
-    pointer-events: none; font-family: "Fraunces", serif; font-size: clamp(80px, 22vw, 320px);
-    font-weight: 600; color: rgba(255,255,255,0.02); letter-spacing: -0.04em; user-select: none; z-index: 0;
-  }
+  body { font-family: "Inter", system-ui, sans-serif; background: radial-gradient(1200px 600px at 80% -10%, rgba(201,162,39,0.10), transparent 60%), var(--navy-900); color: var(--cream); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  .wordmark-bg { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; font-family: "Fraunces", serif; font-size: clamp(80px, 22vw, 320px); font-weight: 600; color: rgba(255,255,255,0.02); letter-spacing: -0.04em; user-select: none; z-index: 0; }
 
   /* LOGIN */
   .login-wrap { position: relative; z-index: 1; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
-  .card {
-    width: 100%; max-width: 440px;
-    background: linear-gradient(180deg, var(--navy-800), var(--navy-900));
-    border: 1px solid var(--navy-700); border-radius: 18px; padding: 40px 34px;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.45); animation: rise .6s cubic-bezier(.2,.8,.2,1) both;
-  }
+  .card { width: 100%; max-width: 440px; background: linear-gradient(180deg, var(--navy-800), var(--navy-900)); border: 1px solid var(--navy-700); border-radius: 18px; padding: 40px 34px; box-shadow: 0 30px 80px rgba(0,0,0,0.45); animation: rise .6s cubic-bezier(.2,.8,.2,1) both; }
   @keyframes rise { from { opacity:0; transform: translateY(14px);} to { opacity:1; transform:none;} }
   .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
   .brand .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 4px rgba(201,162,39,0.15); }
@@ -51,11 +31,7 @@
   .brand .name span { color: var(--gold); }
   h1 { font-family: "Fraunces", serif; font-weight: 600; font-size: 30px; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 10px; }
   .sub { color: var(--slate); font-size: 15px; line-height: 1.5; margin-bottom: 30px; }
-  .btn-google {
-    width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px;
-    background: var(--cream); color: #1a1a1a; border: none; border-radius: 12px; padding: 14px 18px;
-    font-family: "Inter", sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: transform .15s, box-shadow .15s;
-  }
+  .btn-google { width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px; background: var(--cream); color: #1a1a1a; border: none; border-radius: 12px; padding: 14px 18px; font-family: "Inter", sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: transform .15s, box-shadow .15s; }
   .btn-google:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(0,0,0,.3); }
   .btn-google:focus-visible { outline: 3px solid var(--gold-lt); outline-offset: 2px; }
   .btn-google svg { width: 20px; height: 20px; }
@@ -72,14 +48,14 @@
   .btn-ghost:hover { color: var(--cream); border-color: var(--slate); }
 
   .toolbar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
-  .search { flex: 1; min-width: 160px; background: var(--navy-800); border: 1px solid var(--navy-700); border-radius: 11px; padding: 11px 14px; color: var(--cream); font-family: "Inter", sans-serif; font-size: 14px; }
+  .search { flex: 1; min-width: 150px; background: var(--navy-800); border: 1px solid var(--navy-700); border-radius: 11px; padding: 11px 14px; color: var(--cream); font-family: "Inter", sans-serif; font-size: 14px; }
   .search::placeholder { color: var(--slate); }
   .search:focus { outline: none; border-color: var(--gold); }
   .toggle { display: flex; background: var(--navy-800); border: 1px solid var(--navy-700); border-radius: 11px; overflow: hidden; }
   .toggle button { background: transparent; color: var(--slate); border: none; padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; }
   .toggle button.active { background: var(--gold); color: var(--navy-900); }
-  .btn-refresh { background: var(--navy-800); color: var(--slate); border: 1px solid var(--navy-700); border-radius: 11px; padding: 0 14px; font-size: 16px; cursor: pointer; transition: color .15s; }
-  .btn-refresh:hover { color: var(--gold); }
+  .btn-icon { background: var(--navy-800); color: var(--slate); border: 1px solid var(--navy-700); border-radius: 11px; padding: 0 14px; font-size: 13px; font-weight: 600; cursor: pointer; transition: color .15s, border-color .15s; }
+  .btn-icon:hover { color: var(--gold); border-color: var(--slate); }
   .btn-new { background: linear-gradient(135deg, var(--gold), var(--gold-lt)); color: var(--navy-900); border: none; border-radius: 11px; padding: 0 18px; font-size: 14px; font-weight: 600; cursor: pointer; transition: transform .15s; }
   .btn-new:hover { transform: translateY(-1px); }
 
@@ -96,11 +72,24 @@
   .badge-estado { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--stc); background: color-mix(in srgb, var(--stc) 12%, transparent); border: 1px solid color-mix(in srgb, var(--stc) 32%, transparent); border-radius: 999px; padding: 3px 10px; }
   .badge-estado::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--stc); }
 
+  /* Estado como dropdown inline */
+  .estado-select {
+    appearance: none; -webkit-appearance: none;
+    font-family: "Inter", sans-serif; font-size: 12px; font-weight: 600;
+    color: var(--stc); background-color: color-mix(in srgb, var(--stc) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--stc) 32%, transparent);
+    border-radius: 999px; padding: 4px 26px 4px 12px; cursor: pointer;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'><path d='M1 1l4 4 4-4' stroke='%23C9A227' stroke-width='1.5'/></svg>");
+    background-repeat: no-repeat; background-position: right 9px center;
+  }
+  .estado-select:focus { outline: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--stc) 40%, transparent); }
+  .estado-select option { background: var(--navy-800); color: var(--cream); }
+
   .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
   .client-card { background: linear-gradient(180deg, var(--navy-800), rgba(16,40,73,0.5)); border: 1px solid var(--navy-700); border-radius: 14px; padding: 16px; cursor: pointer; transition: transform .15s, border-color .15s; }
   .client-card:hover { transform: translateY(-2px); border-color: var(--gold); }
   .client-card .cc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
-  .client-card .cc-name { font-weight: 600; font-size: 15.5px; line-height: 1.3; }
+  .client-card .cc-name { font-weight: 600; font-size: 15.5px; line-height: 1.3; padding-top: 3px; }
   .client-card .cc-meta { color: var(--slate); font-size: 12.5px; line-height: 1.7; }
   .client-card .cc-actions { margin-top: 12px; display: flex; gap: 8px; }
 
@@ -111,7 +100,7 @@
   .table-wrap { overflow-x: auto; border: 1px solid var(--navy-700); border-radius: 14px; }
   table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 560px; }
   thead th { text-align: left; color: var(--slate); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; padding: 12px 14px; border-bottom: 1px solid var(--navy-700); background: var(--navy-800); }
-  tbody td { padding: 13px 14px; border-bottom: 1px solid rgba(23,52,92,0.5); }
+  tbody td { padding: 11px 14px; border-bottom: 1px solid rgba(23,52,92,0.5); }
   tbody tr { cursor: pointer; transition: background .12s; }
   tbody tr:hover { background: rgba(201,162,39,0.05); }
   tbody tr:last-child td { border-bottom: none; }
@@ -144,7 +133,9 @@
   /* MODAL */
   .modal-overlay { position: fixed; inset: 0; z-index: 50; background: rgba(5,12,26,0.72); backdrop-filter: blur(3px); display: flex; align-items: flex-start; justify-content: center; padding: 30px 16px; overflow-y: auto; }
   .modal { width: 100%; max-width: 520px; background: linear-gradient(180deg, var(--navy-800), var(--navy-900)); border: 1px solid var(--navy-700); border-radius: 18px; padding: 26px 24px; box-shadow: 0 30px 80px rgba(0,0,0,0.5); animation: rise .3s ease both; }
-  .modal h3 { font-family: "Fraunces", serif; font-size: 22px; font-weight: 600; margin-bottom: 20px; }
+  .modal h3 { font-family: "Fraunces", serif; font-size: 22px; font-weight: 600; margin-bottom: 16px; }
+  .modal-help { color: var(--slate); font-size: 13.5px; line-height: 1.55; margin-bottom: 18px; }
+  .modal-help b { color: var(--cream); }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
   .fld { display: flex; flex-direction: column; gap: 6px; }
   .fld.full { grid-column: 1 / -1; }
@@ -156,7 +147,17 @@
   .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
   .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-lt)); color: var(--navy-900); border: none; border-radius: 11px; padding: 11px 22px; font-weight: 600; font-size: 14px; cursor: pointer; transition: transform .15s, box-shadow .15s; }
   .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(201,162,39,.3); }
-  .btn-gold:disabled { opacity: .6; cursor: default; transform: none; box-shadow: none; }
+  .btn-gold:disabled { opacity: .5; cursor: default; transform: none; box-shadow: none; }
+
+  /* Importador CSV */
+  .file-input { width: 100%; background: var(--navy-900); border: 1px dashed var(--navy-700); border-radius: 12px; padding: 22px 14px; color: var(--slate); font-family: "Inter", sans-serif; font-size: 13.5px; cursor: pointer; margin-bottom: 14px; }
+  .file-input::file-selector-button { background: var(--gold); color: var(--navy-900); border: none; border-radius: 8px; padding: 8px 14px; font-weight: 600; font-family: "Inter"; margin-right: 12px; cursor: pointer; }
+  .csv-preview { background: var(--navy-900); border: 1px solid var(--navy-700); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; font-size: 13.5px; line-height: 1.6; }
+  .csv-preview .big { color: var(--gold-lt); font-weight: 600; font-family: "Fraunces", serif; font-size: 18px; }
+  .csv-preview ul { margin: 8px 0 0 18px; color: var(--slate); }
+
+  /* Toast */
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--navy-800); border: 1px solid var(--gold); color: var(--cream); padding: 12px 22px; border-radius: 12px; z-index: 100; font-size: 14px; font-weight: 500; box-shadow: 0 12px 34px rgba(0,0,0,.45); }
 
   @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
   .hidden { display: none !important; }
@@ -197,7 +198,8 @@
         <button id="view-cards" class="active">Tarjetas</button>
         <button id="view-table">Tabla</button>
       </div>
-      <button id="btn-refresh" class="btn-refresh" title="Actualizar">⟳</button>
+      <button id="btn-refresh" class="btn-icon" title="Actualizar">⟳</button>
+      <button id="btn-import" class="btn-icon">⭳ Importar CSV</button>
       <button id="btn-new" class="btn-new">+ Nuevo cliente</button>
     </div>
     <div id="filters" class="filters"></div>
@@ -220,10 +222,7 @@
       <div class="fld"><label>Email</label><input id="f-email" type="email" /></div>
       <div class="fld"><label>Estado</label>
         <select id="f-estado">
-          <option>Lead no calificado</option>
-          <option>Prospecto</option>
-          <option>Cliente</option>
-          <option>Perdido</option>
+          <option>Lead no calificado</option><option>Prospecto</option><option>Cliente</option><option>Perdido</option>
         </select>
       </div>
       <div class="fld"><label>Origen</label><input id="f-origen" type="text" placeholder="Referido, Instagram…" /></div>
@@ -238,6 +237,21 @@
   </div>
 </div>
 
+<!-- MODAL importar CSV -->
+<div id="import-overlay" class="modal-overlay hidden">
+  <div class="modal">
+    <h3>Importar contactos (CSV)</h3>
+    <p class="modal-help">Sube un archivo <b>.csv</b> con tres columnas en este orden: <b>Nombre</b>, <b>Correo</b>, <b>Teléfono</b>. No necesitas incluir un ID: el sistema le asigna uno único a cada contacto y los crea como <b>“Lead no calificado”</b>.</p>
+    <input type="file" id="csv-file" class="file-input" accept=".csv,text/csv" />
+    <div id="csv-preview" class="csv-preview hidden"></div>
+    <div id="import-error" class="modal-error"></div>
+    <div class="modal-actions">
+      <button id="import-cancel" class="btn-ghost">Cancelar</button>
+      <button id="import-run" class="btn-gold" disabled>Importar contactos</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ================================================================
    CONFIGURACIÓN — ya viene lista con tus valores. No tocar.
@@ -247,24 +261,21 @@ const CONFIG = {
   SHEET_ID:      "1OZWZafDI7kbe5HLcXeDkVQXcyKFVCnVW00gswffXknE",
   ALLOWED_EMAIL: "jhoace26@gmail.com"
 };
-
-/* Saludo pre-cargado en WhatsApp. {nombre} = primer nombre del cliente. */
 const WHATSAPP_SALUDO = "Hola {nombre}, te saluda Jhon de @jhonanaliza 👋";
 
-const SCOPES = "https://www.googleapis.com/auth/spreadsheets " +
-               "https://www.googleapis.com/auth/drive.file openid email profile";
+const SCOPES = "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file openid email profile";
 const ESTADOS = ["Lead no calificado", "Prospecto", "Cliente", "Perdido"];
 const API = "https://sheets.googleapis.com/v4/spreadsheets/" + CONFIG.SHEET_ID;
 
 let accessToken = null, tokenClient = null;
 let clientes = [], estadoActivo = "Todos", vista = "cards";
-let editando = null;   // cliente en edición, o null si es nuevo
+let editando = null, csvContactos = [];
 
 const $ = (id) => document.getElementById(id);
 const viewLogin = $("view-login"), viewApp = $("view-app");
 const searchInput = $("search"), filtersEl = $("filters"), listContainer = $("list-container");
 const screenList = $("screen-list"), screenDetail = $("screen-detail"), fichaContent = $("ficha-content");
-const modal = $("modal-overlay");
+const modal = $("modal-overlay"), importModal = $("import-overlay");
 
 /* ============ LOGIN ============ */
 function initGoogle() {
@@ -295,7 +306,6 @@ $("btn-logout").addEventListener("click", () => {
   accessToken = null; clientes = [];
   viewApp.classList.add("hidden"); viewLogin.classList.remove("hidden");
 });
-
 function auth() { return { Authorization: "Bearer " + accessToken }; }
 function authJSON() { return { Authorization: "Bearer " + accessToken, "Content-Type": "application/json" }; }
 
@@ -325,13 +335,17 @@ function clientesFiltrados() {
   return clientes.filter(c => (estadoActivo === "Todos" || c.estado === estadoActivo) && c.nombre.toLowerCase().includes(q));
 }
 function claseEstado(e) { return e === "Cliente" ? "st-cliente" : e === "Prospecto" ? "st-prospecto" : e === "Perdido" ? "st-perdido" : "st-lead"; }
+function selectEstado(c) {
+  const opts = ESTADOS.map(e => '<option' + (e === c.estado ? ' selected' : '') + '>' + e + '</option>').join('');
+  return '<select class="estado-select ' + claseEstado(c.estado) + '" data-id="' + esc(c.id) + '" data-fila="' + c.fila + '">' + opts + '</select>';
+}
 
 /* ============ RENDER ============ */
 function render() {
   renderFiltros();
   const lista = clientesFiltrados();
   if (clientes.length === 0) {
-    listContainer.innerHTML = '<div class="empty"><strong>Aún no tienes clientes</strong>Pulsa <b>+ Nuevo cliente</b> para agregar el primero. Se guardará solo en tu base.</div>';
+    listContainer.innerHTML = '<div class="empty"><strong>Aún no tienes clientes</strong>Pulsa <b>+ Nuevo cliente</b> o <b>Importar CSV</b> para empezar.</div>';
     return;
   }
   if (lista.length === 0) { listContainer.innerHTML = '<div class="empty"><strong>Sin resultados</strong>Ningún cliente coincide con el filtro o la búsqueda.</div>'; return; }
@@ -350,8 +364,8 @@ function chip(label, n, active) {
 function renderCards(lista) {
   let html = '<div class="cards">';
   lista.forEach(c => {
-    html += '<div class="client-card ' + claseEstado(c.estado) + '" data-id="' + esc(c.id) + '">' +
-      '<div class="cc-top"><div class="cc-name">' + esc(c.nombre) + '</div><span class="badge-estado">' + esc(c.estado) + '</span></div>' +
+    html += '<div class="client-card" data-id="' + esc(c.id) + '">' +
+      '<div class="cc-top"><div class="cc-name">' + esc(c.nombre) + '</div>' + selectEstado(c) + '</div>' +
       '<div class="cc-meta">' + (c.telefono ? '📱 ' + esc(c.telefono) + '<br>' : '') +
       (c.ultimoSeguimiento ? '🕒 Últ. seguimiento: ' + esc(c.ultimoSeguimiento) : '<span style="opacity:.6">Sin seguimientos aún</span>') + '</div>' +
       '<div class="cc-actions">' + botonWA(c) + '</div></div>';
@@ -362,17 +376,37 @@ function renderTabla(lista) {
   let html = '<div class="table-wrap"><table><thead><tr><th>Nombre</th><th>Estado</th><th>Teléfono</th><th>Últ. seguimiento</th><th></th></tr></thead><tbody>';
   lista.forEach(c => {
     html += '<tr data-id="' + esc(c.id) + '"><td class="td-name">' + esc(c.nombre) + '</td>' +
-      '<td class="' + claseEstado(c.estado) + '"><span class="badge-estado">' + esc(c.estado) + '</span></td>' +
+      '<td>' + selectEstado(c) + '</td>' +
       '<td>' + (esc(c.telefono) || '—') + '</td><td>' + (esc(c.ultimoSeguimiento) || '—') + '</td>' +
       '<td>' + botonWA(c) + '</td></tr>';
   });
   return html + '</tbody></table></div>';
 }
+
+/* Abrir ficha al tocar (ignora WhatsApp y el dropdown de estado) */
 listContainer.addEventListener("click", (e) => {
-  if (e.target.closest(".btn-wa")) return;
+  if (e.target.closest(".btn-wa") || e.target.closest(".estado-select")) return;
   const item = e.target.closest("[data-id]");
   if (item) abrirFicha(item.dataset.id);
 });
+/* Cambiar estado desde el listado */
+listContainer.addEventListener("change", (e) => {
+  const sel = e.target.closest(".estado-select");
+  if (sel) cambiarEstado(sel.dataset.id, parseInt(sel.dataset.fila, 10), sel.value);
+});
+
+/* ============ CAMBIO DE ESTADO (dropdown inline) ============ */
+async function cambiarEstado(id, fila, nuevo) {
+  try {
+    const r = await fetch(API + "/values/Clientes!E" + fila + "?valueInputOption=USER_ENTERED",
+      { method: "PUT", headers: authJSON(), body: JSON.stringify({ values: [[nuevo]] }) });
+    const d = await r.json(); if (d.error) throw new Error(d.error.message);
+    const c = clientes.find(x => x.id === id); if (c) c.estado = nuevo;
+    render();
+    if (!screenDetail.classList.contains("hidden")) abrirFicha(id);
+    toast("Estado → " + nuevo);
+  } catch (e) { toast("No se pudo actualizar el estado"); cargarClientes(); }
+}
 
 /* ============ WHATSAPP ============ */
 function linkWA(c) {
@@ -394,8 +428,8 @@ function abrirFicha(id) {
   if (!c) return;
   const link = linkWA(c);
   fichaContent.innerHTML =
-    '<div class="ficha-head ' + claseEstado(c.estado) + '"><div class="ficha-avatar">' + esc((c.nombre||"?").trim().charAt(0).toUpperCase()) + '</div>' +
-    '<div><h2>' + esc(c.nombre) + '</h2><span class="badge-estado">' + esc(c.estado) + '</span></div></div>' +
+    '<div class="ficha-head"><div class="ficha-avatar">' + esc((c.nombre||"?").trim().charAt(0).toUpperCase()) + '</div>' +
+    '<div><h2>' + esc(c.nombre) + '</h2>' + selectEstado(c) + '</div></div>' +
     '<div class="ficha-actions">' +
       (link ? '<a class="btn-wa" href="' + link + '" target="_blank" rel="noopener">Escribir por WhatsApp</a>' : '<span class="btn-wa disabled">Sin número</span>') +
       '<button class="btn-edit" onclick="editarCliente(\'' + esc(c.id) + '\')">✎ Editar</button>' +
@@ -408,19 +442,24 @@ function abrirFicha(id) {
 }
 function celda(k, v) { return '<div class="datacell"><div class="k">' + k + '</div><div class="v">' + (esc(v) || '—') + '</div></div>'; }
 $("btn-back").addEventListener("click", () => { screenDetail.classList.add("hidden"); screenList.classList.remove("hidden"); });
+/* Cambiar estado desde la ficha */
+fichaContent.addEventListener("change", (e) => {
+  const sel = e.target.closest(".estado-select");
+  if (sel) cambiarEstado(sel.dataset.id, parseInt(sel.dataset.fila, 10), sel.value);
+});
 
-/* ============ MODAL: CREAR / EDITAR ============ */
+/* ============ MODAL CREAR / EDITAR ============ */
 function abrirModal(cliente) {
   editando = cliente || null;
   $("modal-title").textContent = editando ? "Editar cliente" : "Nuevo cliente";
   $("modal-error").textContent = "";
-  $("f-nombre").value   = editando ? editando.nombre : "";
+  $("f-nombre").value = editando ? editando.nombre : "";
   $("f-telefono").value = editando ? editando.telefono : "";
-  $("f-email").value    = editando ? editando.email : "";
-  $("f-estado").value   = editando ? editando.estado : "Lead no calificado";
-  $("f-origen").value   = editando ? editando.origen : "";
-  $("f-etiquetas").value= editando ? editando.etiquetas : "";
-  $("f-notas").value    = editando ? editando.notas : "";
+  $("f-email").value = editando ? editando.email : "";
+  $("f-estado").value = editando ? editando.estado : "Lead no calificado";
+  $("f-origen").value = editando ? editando.origen : "";
+  $("f-etiquetas").value = editando ? editando.etiquetas : "";
+  $("f-notas").value = editando ? editando.notas : "";
   modal.classList.remove("hidden");
   $("f-nombre").focus();
 }
@@ -432,47 +471,120 @@ modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList
 $("modal-save").addEventListener("click", async () => {
   const nombre = $("f-nombre").value.trim();
   if (!nombre) { $("modal-error").textContent = "El nombre es obligatorio."; return; }
-
-  const btn = $("modal-save");
-  btn.disabled = true; btn.textContent = "Guardando…"; $("modal-error").textContent = "";
-
-  const datos = {
-    nombre,
-    telefono:  $("f-telefono").value.trim(),
-    email:     $("f-email").value.trim(),
-    estado:    $("f-estado").value,
-    origen:    $("f-origen").value.trim(),
-    etiquetas: $("f-etiquetas").value.trim(),
-    notas:     $("f-notas").value.trim()
-  };
-
+  const btn = $("modal-save"); btn.disabled = true; btn.textContent = "Guardando…"; $("modal-error").textContent = "";
+  const d = { nombre, telefono: $("f-telefono").value.trim(), email: $("f-email").value.trim(), estado: $("f-estado").value,
+              origen: $("f-origen").value.trim(), etiquetas: $("f-etiquetas").value.trim(), notas: $("f-notas").value.trim() };
   try {
     if (editando) {
-      // Actualiza la fila existente (conserva ID, fecha de creación y último seguimiento)
-      const row = [ editando.id, datos.nombre, datos.telefono, datos.email, datos.estado,
-                    datos.origen, datos.etiquetas, editando.fechaCreacion || hoyISO(),
-                    editando.ultimoSeguimiento || "", datos.notas ];
-      const r = await fetch(API + "/values/Clientes!A" + editando.fila + ":J" + editando.fila +
-                "?valueInputOption=USER_ENTERED", { method: "PUT", headers: authJSON(), body: JSON.stringify({ values: [row] }) });
-      const d = await r.json(); if (d.error) throw new Error(d.error.message);
+      const row = [editando.id, d.nombre, d.telefono, d.email, d.estado, d.origen, d.etiquetas,
+                   editando.fechaCreacion || hoyISO(), editando.ultimoSeguimiento || "", d.notas];
+      const r = await fetch(API + "/values/Clientes!A" + editando.fila + ":J" + editando.fila + "?valueInputOption=USER_ENTERED",
+                { method: "PUT", headers: authJSON(), body: JSON.stringify({ values: [row] }) });
+      const j = await r.json(); if (j.error) throw new Error(j.error.message);
     } else {
-      // Crea una fila nueva al final
       const id = "CLI-" + Date.now().toString(36).toUpperCase();
-      const row = [ id, datos.nombre, datos.telefono, datos.email, datos.estado,
-                    datos.origen, datos.etiquetas, hoyISO(), "", datos.notas ];
+      const row = [id, d.nombre, d.telefono, d.email, d.estado, d.origen, d.etiquetas, hoyISO(), "", d.notas];
       const r = await fetch(API + "/values/Clientes!A:J:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS",
                 { method: "POST", headers: authJSON(), body: JSON.stringify({ values: [row] }) });
-      const d = await r.json(); if (d.error) throw new Error(d.error.message);
+      const j = await r.json(); if (j.error) throw new Error(j.error.message);
     }
     modal.classList.add("hidden");
     const idEditado = editando ? editando.id : null;
     await cargarClientes();
-    if (idEditado) abrirFicha(idEditado);  // reabre la ficha si venías editando
-  } catch (e) {
-    $("modal-error").textContent = "No se pudo guardar: " + e.message;
-  } finally {
-    btn.disabled = false; btn.textContent = "Guardar cliente";
+    if (idEditado) abrirFicha(idEditado);
+    toast(idEditado ? "Cliente actualizado" : "Cliente creado");
+  } catch (e) { $("modal-error").textContent = "No se pudo guardar: " + e.message; }
+  finally { btn.disabled = false; btn.textContent = "Guardar cliente"; }
+});
+
+/* ============ IMPORTAR CSV ============ */
+$("btn-import").addEventListener("click", () => {
+  csvContactos = []; $("csv-file").value = ""; $("import-error").textContent = "";
+  $("csv-preview").classList.add("hidden"); $("csv-preview").innerHTML = "";
+  $("import-run").disabled = true;
+  importModal.classList.remove("hidden");
+});
+$("import-cancel").addEventListener("click", () => importModal.classList.add("hidden"));
+importModal.addEventListener("click", (e) => { if (e.target === importModal) importModal.classList.add("hidden"); });
+
+$("csv-file").addEventListener("change", (e) => {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => procesarCSV(reader.result);
+  reader.onerror = () => { $("import-error").textContent = "No se pudo leer el archivo."; };
+  reader.readAsText(file, "UTF-8");
+});
+
+/* Parser CSV: detecta delimitador (, o ;) y respeta comillas */
+function parseCSV(text) {
+  const primeraLinea = text.split(/\r?\n/)[0] || "";
+  const delim = (primeraLinea.split(";").length > primeraLinea.split(",").length) ? ";" : ",";
+  const filas = []; let fila = [], campo = "", enComillas = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (enComillas) {
+      if (ch === '"') { if (text[i + 1] === '"') { campo += '"'; i++; } else enComillas = false; }
+      else campo += ch;
+    } else {
+      if (ch === '"') enComillas = true;
+      else if (ch === delim) { fila.push(campo); campo = ""; }
+      else if (ch === "\n") { fila.push(campo); filas.push(fila); fila = []; campo = ""; }
+      else if (ch === "\r") { /* ignore */ }
+      else campo += ch;
+    }
   }
+  if (campo.length || fila.length) { fila.push(campo); filas.push(fila); }
+  return filas.filter(f => f.some(x => x.trim() !== ""));
+}
+
+function procesarCSV(text) {
+  $("import-error").textContent = "";
+  const filas = parseCSV(text);
+  if (filas.length === 0) { $("import-error").textContent = "El archivo está vacío."; return; }
+
+  // ¿La primera fila es encabezado?
+  let iNombre = 0, iCorreo = 1, iTel = 2, inicio = 0;
+  const cab = filas[0].map(x => x.toLowerCase().trim());
+  const esCabecera = cab.some(h => /nombre|name|correo|email|mail|tel|phone|celular|whatsapp|m[oó]vil/.test(h));
+  if (esCabecera) {
+    inicio = 1;
+    const buscar = (keys) => cab.findIndex(h => keys.some(k => h.includes(k)));
+    const n = buscar(["nombre", "name"]); const co = buscar(["correo", "email", "mail"]); const t = buscar(["tel", "phone", "celular", "whatsapp", "movil", "móvil"]);
+    if (n >= 0) iNombre = n; if (co >= 0) iCorreo = co; if (t >= 0) iTel = t;
+  }
+
+  csvContactos = [];
+  for (let i = inicio; i < filas.length; i++) {
+    const f = filas[i];
+    const nombre = (f[iNombre] || "").trim();
+    if (!nombre) continue;
+    csvContactos.push({ nombre, correo: (f[iCorreo] || "").trim(), telefono: (f[iTel] || "").trim() });
+  }
+
+  if (csvContactos.length === 0) { $("import-error").textContent = "No se encontraron contactos con nombre."; $("csv-preview").classList.add("hidden"); $("import-run").disabled = true; return; }
+
+  const muestra = csvContactos.slice(0, 3).map(c => "<li>" + esc(c.nombre) + (c.telefono ? " · " + esc(c.telefono) : "") + "</li>").join("");
+  $("csv-preview").innerHTML = '<span class="big">' + csvContactos.length + ' contacto' + (csvContactos.length === 1 ? "" : "s") + '</span> listos para importar.' +
+    '<ul>' + muestra + (csvContactos.length > 3 ? "<li>…y " + (csvContactos.length - 3) + " más</li>" : "") + '</ul>';
+  $("csv-preview").classList.remove("hidden");
+  $("import-run").disabled = false;
+}
+
+$("import-run").addEventListener("click", async () => {
+  if (csvContactos.length === 0) return;
+  const btn = $("import-run"); btn.disabled = true; btn.textContent = "Importando…"; $("import-error").textContent = "";
+  const base = Date.now().toString(36).toUpperCase();
+  const rows = csvContactos.map((c, i) =>
+    ["CLI-" + base + "-" + i, c.nombre, c.telefono, c.correo, "Lead no calificado", "Importado CSV", "", hoyISO(), "", ""]);
+  try {
+    const r = await fetch(API + "/values/Clientes!A:J:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS",
+      { method: "POST", headers: authJSON(), body: JSON.stringify({ values: rows }) });
+    const j = await r.json(); if (j.error) throw new Error(j.error.message);
+    importModal.classList.add("hidden");
+    await cargarClientes();
+    toast(rows.length + " contactos importados");
+  } catch (e) { $("import-error").textContent = "No se pudo importar: " + e.message; }
+  finally { btn.disabled = false; btn.textContent = "Importar contactos"; }
 });
 
 /* ============ EVENTOS LISTA ============ */
@@ -481,6 +593,7 @@ $("view-cards").addEventListener("click", function(){ vista="cards"; this.classL
 $("view-table").addEventListener("click", function(){ vista="table"; this.classList.add("active"); $("view-cards").classList.remove("active"); render(); });
 
 /* ============ UTIL ============ */
+function toast(msg) { let t = $("_toast"); if (!t) { t = document.createElement("div"); t.id = "_toast"; t.className = "toast"; document.body.appendChild(t); } t.textContent = msg; t.classList.remove("hidden"); clearTimeout(t._t); t._t = setTimeout(() => t.classList.add("hidden"), 2600); }
 function hoyISO(){ const d=new Date(), z=n=>String(n).padStart(2,"0"); return d.getFullYear()+"-"+z(d.getMonth()+1)+"-"+z(d.getDate()); }
 function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
 </script>
