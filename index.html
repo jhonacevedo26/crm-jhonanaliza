@@ -5,181 +5,160 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>CRM · @jhonanaliza</title>
 
-<!-- Librería oficial de Google Identity Services (maneja el login) -->
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-<!-- Tipografías: Fraunces (display) + Inter (interfaz) -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
 <style>
-  /* ============================================================
-     PALETA @jhonanaliza  (navy / gold)
-     ============================================================ */
   :root {
-    --navy-900: #0A1D3A;   /* fondo profundo   */
-    --navy-800: #102849;   /* superficies      */
-    --navy-700: #17345c;   /* bordes suaves    */
-    --gold:     #C9A227;   /* acento principal */
-    --gold-lt:  #E4C35A;   /* acento claro     */
-    --cream:    #F5F1E6;   /* texto principal  */
-    --slate:    #93A0B5;   /* texto secundario */
+    --navy-900: #0A1D3A;
+    --navy-800: #102849;
+    --navy-700: #17345c;
+    --gold:     #C9A227;
+    --gold-lt:  #E4C35A;
+    --cream:    #F5F1E6;
+    --slate:    #93A0B5;
     --danger:   #E06D6D;
     --ok:       #6FBF8B;
+    --wa:       #25D366;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   body {
     font-family: "Inter", system-ui, sans-serif;
-    background:
-      radial-gradient(1200px 600px at 80% -10%, rgba(201,162,39,0.10), transparent 60%),
-      var(--navy-900);
-    color: var(--cream);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    -webkit-font-smoothing: antialiased;
+    background: radial-gradient(1200px 600px at 80% -10%, rgba(201,162,39,0.10), transparent 60%), var(--navy-900);
+    color: var(--cream); min-height: 100vh; -webkit-font-smoothing: antialiased;
   }
-
-  /* Marca de agua tipográfica de fondo (elemento de firma, discreto) */
   .wordmark-bg {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    font-family: "Fraunces", serif;
-    font-size: clamp(80px, 22vw, 320px);
-    font-weight: 600;
-    color: rgba(255,255,255,0.02);
-    letter-spacing: -0.04em;
-    user-select: none;
-    z-index: 0;
+    position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+    pointer-events: none; font-family: "Fraunces", serif; font-size: clamp(80px, 22vw, 320px);
+    font-weight: 600; color: rgba(255,255,255,0.02); letter-spacing: -0.04em; user-select: none; z-index: 0;
   }
 
-  .stage { position: relative; z-index: 1; width: 100%; max-width: 440px; }
-
-  /* ---------- Tarjeta ---------- */
+  /* LOGIN */
+  .login-wrap { position: relative; z-index: 1; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
   .card {
+    width: 100%; max-width: 440px;
     background: linear-gradient(180deg, var(--navy-800), var(--navy-900));
-    border: 1px solid var(--navy-700);
-    border-radius: 18px;
-    padding: 40px 34px;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.45);
-    animation: rise .6s cubic-bezier(.2,.8,.2,1) both;
+    border: 1px solid var(--navy-700); border-radius: 18px; padding: 40px 34px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.45); animation: rise .6s cubic-bezier(.2,.8,.2,1) both;
   }
-  @keyframes rise { from { opacity:0; transform: translateY(14px); } to { opacity:1; transform:none; } }
-
+  @keyframes rise { from { opacity:0; transform: translateY(14px);} to { opacity:1; transform:none;} }
   .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
-  .brand .dot {
-    width: 10px; height: 10px; border-radius: 50%;
-    background: var(--gold);
-    box-shadow: 0 0 0 4px rgba(201,162,39,0.15);
-  }
-  .brand .name {
-    font-family: "Fraunces", serif;
-    font-weight: 600;
-    font-size: 19px;
-    letter-spacing: -0.01em;
-  }
+  .brand .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 4px rgba(201,162,39,0.15); }
+  .brand .name { font-family: "Fraunces", serif; font-weight: 600; font-size: 19px; letter-spacing: -0.01em; }
   .brand .name span { color: var(--gold); }
-
-  h1 {
-    font-family: "Fraunces", serif;
-    font-weight: 600;
-    font-size: 30px;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    margin-bottom: 10px;
-  }
+  h1 { font-family: "Fraunces", serif; font-weight: 600; font-size: 30px; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 10px; }
   .sub { color: var(--slate); font-size: 15px; line-height: 1.5; margin-bottom: 30px; }
-
-  /* ---------- Botón Google ---------- */
   .btn-google {
-    width: 100%;
-    display: flex; align-items: center; justify-content: center; gap: 12px;
-    background: var(--cream);
-    color: #1a1a1a;
-    border: none;
-    border-radius: 12px;
-    padding: 14px 18px;
-    font-family: "Inter", sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform .15s ease, box-shadow .15s ease;
+    width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px;
+    background: var(--cream); color: #1a1a1a; border: none; border-radius: 12px; padding: 14px 18px;
+    font-family: "Inter", sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: transform .15s, box-shadow .15s;
   }
   .btn-google:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(0,0,0,.3); }
   .btn-google:focus-visible { outline: 3px solid var(--gold-lt); outline-offset: 2px; }
   .btn-google svg { width: 20px; height: 20px; }
-
   .hint { margin-top: 18px; font-size: 12.5px; color: var(--slate); text-align: center; line-height: 1.5; }
 
-  /* ---------- Estado autenticado ---------- */
-  .topbar {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 26px;
-  }
+  /* APP */
+  .app-wrap { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 26px 18px 90px; animation: rise .5s cubic-bezier(.2,.8,.2,1) both; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
   .who { display: flex; align-items: center; gap: 12px; }
-  .avatar {
-    width: 42px; height: 42px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--gold), var(--gold-lt));
-    display: flex; align-items: center; justify-content: center;
-    font-family: "Fraunces", serif; font-weight: 600; color: var(--navy-900);
-    font-size: 18px;
-  }
+  .avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), var(--gold-lt)); display: flex; align-items: center; justify-content: center; font-family: "Fraunces", serif; font-weight: 600; color: var(--navy-900); font-size: 18px; }
   .who .meta small { color: var(--slate); font-size: 12.5px; display: block; }
   .who .meta strong { font-size: 15px; font-weight: 600; }
-
-  .btn-ghost {
-    background: transparent; color: var(--slate);
-    border: 1px solid var(--navy-700); border-radius: 10px;
-    padding: 8px 14px; font-size: 13px; font-weight: 500; cursor: pointer;
-    transition: color .15s, border-color .15s;
-  }
+  .btn-ghost { background: transparent; color: var(--slate); border: 1px solid var(--navy-700); border-radius: 10px; padding: 8px 14px; font-size: 13px; font-weight: 500; cursor: pointer; transition: color .15s, border-color .15s; }
   .btn-ghost:hover { color: var(--cream); border-color: var(--slate); }
 
-  .panel {
-    border: 1px solid var(--navy-700);
-    border-radius: 14px;
-    padding: 22px;
-    background: rgba(255,255,255,0.015);
-  }
-  .badge {
-    display: inline-flex; align-items: center; gap: 7px;
-    background: rgba(111,191,139,0.12);
-    color: var(--ok);
-    border: 1px solid rgba(111,191,139,0.3);
-    border-radius: 999px; padding: 5px 12px; font-size: 12.5px; font-weight: 600;
-    margin-bottom: 16px;
-  }
-  .panel h2 { font-family: "Fraunces", serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; }
-  .panel p { color: var(--slate); font-size: 14px; line-height: 1.55; margin-bottom: 18px; }
+  .toolbar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .search { flex: 1; min-width: 160px; background: var(--navy-800); border: 1px solid var(--navy-700); border-radius: 11px; padding: 11px 14px; color: var(--cream); font-family: "Inter", sans-serif; font-size: 14px; }
+  .search::placeholder { color: var(--slate); }
+  .search:focus { outline: none; border-color: var(--gold); }
+  .toggle { display: flex; background: var(--navy-800); border: 1px solid var(--navy-700); border-radius: 11px; overflow: hidden; }
+  .toggle button { background: transparent; color: var(--slate); border: none; padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; }
+  .toggle button.active { background: var(--gold); color: var(--navy-900); }
+  .btn-refresh { background: var(--navy-800); color: var(--slate); border: 1px solid var(--navy-700); border-radius: 11px; padding: 0 14px; font-size: 16px; cursor: pointer; transition: color .15s; }
+  .btn-refresh:hover { color: var(--gold); }
+  .btn-new { background: linear-gradient(135deg, var(--gold), var(--gold-lt)); color: var(--navy-900); border: none; border-radius: 11px; padding: 0 18px; font-size: 14px; font-weight: 600; cursor: pointer; transition: transform .15s; }
+  .btn-new:hover { transform: translateY(-1px); }
 
-  .btn-gold {
-    width: 100%;
-    background: linear-gradient(135deg, var(--gold), var(--gold-lt));
-    color: var(--navy-900);
-    border: none; border-radius: 11px;
-    padding: 13px; font-weight: 600; font-size: 14.5px; cursor: pointer;
-    transition: transform .15s ease, box-shadow .15s ease;
-  }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .chip { background: var(--navy-800); border: 1px solid var(--navy-700); color: var(--slate); border-radius: 999px; padding: 7px 14px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all .15s; white-space: nowrap; }
+  .chip:hover { border-color: var(--slate); color: var(--cream); }
+  .chip.active { background: var(--cream); color: var(--navy-900); border-color: var(--cream); font-weight: 600; }
+  .chip .count { opacity: .65; margin-left: 5px; font-size: 12px; }
+
+  .st-lead { --stc: var(--slate); }
+  .st-prospecto { --stc: var(--gold-lt); }
+  .st-cliente { --stc: var(--ok); }
+  .st-perdido { --stc: var(--danger); }
+  .badge-estado { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--stc); background: color-mix(in srgb, var(--stc) 12%, transparent); border: 1px solid color-mix(in srgb, var(--stc) 32%, transparent); border-radius: 999px; padding: 3px 10px; }
+  .badge-estado::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--stc); }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+  .client-card { background: linear-gradient(180deg, var(--navy-800), rgba(16,40,73,0.5)); border: 1px solid var(--navy-700); border-radius: 14px; padding: 16px; cursor: pointer; transition: transform .15s, border-color .15s; }
+  .client-card:hover { transform: translateY(-2px); border-color: var(--gold); }
+  .client-card .cc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
+  .client-card .cc-name { font-weight: 600; font-size: 15.5px; line-height: 1.3; }
+  .client-card .cc-meta { color: var(--slate); font-size: 12.5px; line-height: 1.7; }
+  .client-card .cc-actions { margin-top: 12px; display: flex; gap: 8px; }
+
+  .btn-wa { display: inline-flex; align-items: center; gap: 6px; background: color-mix(in srgb, var(--wa) 14%, transparent); color: var(--wa); border: 1px solid color-mix(in srgb, var(--wa) 35%, transparent); border-radius: 9px; padding: 7px 12px; font-size: 12.5px; font-weight: 600; text-decoration: none; cursor: pointer; transition: background .15s; }
+  .btn-wa:hover { background: color-mix(in srgb, var(--wa) 22%, transparent); }
+  .btn-wa.disabled { opacity: .4; pointer-events: none; }
+
+  .table-wrap { overflow-x: auto; border: 1px solid var(--navy-700); border-radius: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 560px; }
+  thead th { text-align: left; color: var(--slate); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; padding: 12px 14px; border-bottom: 1px solid var(--navy-700); background: var(--navy-800); }
+  tbody td { padding: 13px 14px; border-bottom: 1px solid rgba(23,52,92,0.5); }
+  tbody tr { cursor: pointer; transition: background .12s; }
+  tbody tr:hover { background: rgba(201,162,39,0.05); }
+  tbody tr:last-child td { border-bottom: none; }
+  .td-name { font-weight: 600; }
+
+  .empty { text-align: center; padding: 50px 20px; color: var(--slate); border: 1px dashed var(--navy-700); border-radius: 14px; font-size: 14px; line-height: 1.6; }
+  .empty strong { color: var(--cream); display: block; margin-bottom: 6px; font-size: 15px; }
+  .loading { text-align: center; padding: 40px; color: var(--slate); font-size: 14px; }
+
+  /* FICHA */
+  .btn-back { background: none; border: none; color: var(--slate); cursor: pointer; font-size: 14px; font-weight: 500; padding: 4px 0; margin-bottom: 18px; display: inline-flex; align-items: center; gap: 6px; transition: color .15s; }
+  .btn-back:hover { color: var(--gold); }
+  .ficha-head { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+  .ficha-avatar { width: 58px; height: 58px; border-radius: 16px; background: linear-gradient(135deg, var(--gold), var(--gold-lt)); display: flex; align-items: center; justify-content: center; font-family: "Fraunces", serif; font-weight: 600; color: var(--navy-900); font-size: 24px; }
+  .ficha-head h2 { font-family: "Fraunces", serif; font-size: 25px; font-weight: 600; margin-bottom: 8px; }
+  .ficha-actions { display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap; }
+  .ficha-actions .btn-wa { font-size: 14px; padding: 11px 18px; }
+  .btn-edit { display: inline-flex; align-items: center; gap: 6px; background: transparent; color: var(--gold-lt); border: 1px solid color-mix(in srgb, var(--gold) 40%, transparent); border-radius: 9px; padding: 11px 18px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .15s; }
+  .btn-edit:hover { background: rgba(201,162,39,0.10); }
+  .datagrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--navy-700); border: 1px solid var(--navy-700); border-radius: 14px; overflow: hidden; margin-bottom: 18px; }
+  .datacell { background: var(--navy-900); padding: 14px 16px; }
+  .datacell .k { color: var(--slate); font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 5px; }
+  .datacell .v { font-size: 14.5px; font-weight: 500; word-break: break-word; }
+  .notas-block { background: var(--navy-800); border: 1px solid var(--navy-700); border-radius: 14px; padding: 16px 18px; margin-bottom: 18px; }
+  .notas-block .k { color: var(--slate); font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 8px; }
+  .notas-block .v { font-size: 14.5px; line-height: 1.6; color: var(--cream); }
+  .coming { border: 1px dashed var(--navy-700); border-radius: 14px; padding: 20px; text-align: center; color: var(--slate); font-size: 13.5px; line-height: 1.6; }
+  .coming strong { color: var(--gold-lt); }
+
+  /* MODAL */
+  .modal-overlay { position: fixed; inset: 0; z-index: 50; background: rgba(5,12,26,0.72); backdrop-filter: blur(3px); display: flex; align-items: flex-start; justify-content: center; padding: 30px 16px; overflow-y: auto; }
+  .modal { width: 100%; max-width: 520px; background: linear-gradient(180deg, var(--navy-800), var(--navy-900)); border: 1px solid var(--navy-700); border-radius: 18px; padding: 26px 24px; box-shadow: 0 30px 80px rgba(0,0,0,0.5); animation: rise .3s ease both; }
+  .modal h3 { font-family: "Fraunces", serif; font-size: 22px; font-weight: 600; margin-bottom: 20px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .fld { display: flex; flex-direction: column; gap: 6px; }
+  .fld.full { grid-column: 1 / -1; }
+  .fld label { font-size: 12px; color: var(--slate); font-weight: 500; letter-spacing: .02em; }
+  .fld input, .fld select, .fld textarea { background: var(--navy-900); border: 1px solid var(--navy-700); border-radius: 10px; padding: 10px 12px; color: var(--cream); font-family: "Inter", sans-serif; font-size: 14px; width: 100%; }
+  .fld input:focus, .fld select:focus, .fld textarea:focus { outline: none; border-color: var(--gold); }
+  .fld textarea { resize: vertical; min-height: 68px; }
+  .modal-error { color: var(--danger); font-size: 13px; margin-bottom: 12px; min-height: 4px; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-lt)); color: var(--navy-900); border: none; border-radius: 11px; padding: 11px 22px; font-weight: 600; font-size: 14px; cursor: pointer; transition: transform .15s, box-shadow .15s; }
   .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(201,162,39,.3); }
   .btn-gold:disabled { opacity: .6; cursor: default; transform: none; box-shadow: none; }
 
-  .result {
-    margin-top: 16px; font-size: 13px; line-height: 1.5;
-    padding: 12px 14px; border-radius: 10px; display: none;
-  }
-  .result.show { display: block; }
-  .result.ok   { background: rgba(111,191,139,0.10); border:1px solid rgba(111,191,139,.3); color: var(--ok); }
-  .result.err  { background: rgba(224,109,109,0.10); border:1px solid rgba(224,109,109,.3); color: var(--danger); }
-
+  @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
   .hidden { display: none !important; }
 </style>
 </head>
@@ -187,180 +166,323 @@
 
 <div class="wordmark-bg">JA</div>
 
-<div class="stage">
-
-  <!-- ============ VISTA 1: LOGIN ============ -->
-  <div id="view-login" class="card">
-    <div class="brand">
-      <span class="dot"></span>
-      <span class="name">@jhon<span>analiza</span></span>
-    </div>
-
+<!-- LOGIN -->
+<div id="view-login" class="login-wrap">
+  <div class="card">
+    <div class="brand"><span class="dot"></span><span class="name">@jhon<span>analiza</span></span></div>
     <h1>Tu CRM personal</h1>
     <p class="sub">Centraliza clientes, seguimientos y tareas. Inicia sesión con tu cuenta de Google para acceder a tu base.</p>
-
     <button id="btn-login" class="btn-google">
       <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 7.3 9.14 5.38 12 5.38z"/></svg>
       Iniciar sesión con Google
     </button>
-
     <p class="hint">Solo tu cuenta autorizada puede ver los datos.<br/>El código es público; la información no.</p>
   </div>
+</div>
 
-  <!-- ============ VISTA 2: AUTENTICADO ============ -->
-  <div id="view-app" class="card hidden">
-    <div class="topbar">
-      <div class="who">
-        <div id="avatar" class="avatar">J</div>
-        <div class="meta">
-          <strong id="user-name">—</strong>
-          <small id="user-email">—</small>
-        </div>
-      </div>
-      <button id="btn-logout" class="btn-ghost">Cerrar sesión</button>
+<!-- APP -->
+<div id="view-app" class="app-wrap hidden">
+  <div class="topbar">
+    <div class="who">
+      <div id="avatar" class="avatar">J</div>
+      <div class="meta"><strong id="user-name">—</strong><small id="user-email">—</small></div>
     </div>
-
-    <div class="panel">
-      <span class="badge">● Fase 1 completa · login activo</span>
-      <h2>Conexión lista</h2>
-      <p>Ya validaste tu identidad con Google. Comprueba que la app también puede leer tu hoja de cálculo: leerá los encabezados de la pestaña <strong>Clientes</strong>.</p>
-
-      <button id="btn-test" class="btn-gold">Probar conexión con el Sheet</button>
-      <div id="test-result" class="result"></div>
-    </div>
+    <button id="btn-logout" class="btn-ghost">Cerrar sesión</button>
   </div>
 
+  <div id="screen-list">
+    <div class="toolbar">
+      <input id="search" class="search" type="text" placeholder="Buscar por nombre…" />
+      <div class="toggle">
+        <button id="view-cards" class="active">Tarjetas</button>
+        <button id="view-table">Tabla</button>
+      </div>
+      <button id="btn-refresh" class="btn-refresh" title="Actualizar">⟳</button>
+      <button id="btn-new" class="btn-new">+ Nuevo cliente</button>
+    </div>
+    <div id="filters" class="filters"></div>
+    <div id="list-container"><div class="loading">Cargando clientes…</div></div>
+  </div>
+
+  <div id="screen-detail" class="hidden">
+    <button id="btn-back" class="btn-back">← Volver al listado</button>
+    <div id="ficha-content"></div>
+  </div>
+</div>
+
+<!-- MODAL crear/editar -->
+<div id="modal-overlay" class="modal-overlay hidden">
+  <div class="modal">
+    <h3 id="modal-title">Nuevo cliente</h3>
+    <div class="form-grid">
+      <div class="fld"><label>Nombre completo *</label><input id="f-nombre" type="text" /></div>
+      <div class="fld"><label>Teléfono (ej. 573001234567)</label><input id="f-telefono" type="text" inputmode="numeric" /></div>
+      <div class="fld"><label>Email</label><input id="f-email" type="email" /></div>
+      <div class="fld"><label>Estado</label>
+        <select id="f-estado">
+          <option>Lead no calificado</option>
+          <option>Prospecto</option>
+          <option>Cliente</option>
+          <option>Perdido</option>
+        </select>
+      </div>
+      <div class="fld"><label>Origen</label><input id="f-origen" type="text" placeholder="Referido, Instagram…" /></div>
+      <div class="fld"><label>Etiquetas</label><input id="f-etiquetas" type="text" placeholder="pensión, alto patrimonio…" /></div>
+      <div class="fld full"><label>Notas generales</label><textarea id="f-notas"></textarea></div>
+    </div>
+    <div id="modal-error" class="modal-error"></div>
+    <div class="modal-actions">
+      <button id="modal-cancel" class="btn-ghost">Cancelar</button>
+      <button id="modal-save" class="btn-gold">Guardar cliente</button>
+    </div>
+  </div>
 </div>
 
 <script>
 /* ================================================================
-   CONFIGURACIÓN  ·  reemplaza los 3 valores con los tuyos
+   CONFIGURACIÓN — ya viene lista con tus valores. No tocar.
    ================================================================ */
 const CONFIG = {
-  // 1) El Client ID que copiaste en Google Cloud (termina en .apps.googleusercontent.com)
-  CLIENT_ID: "410581140938-ab6jclatatec2n3d2r7bonglfvi27a5f.apps.googleusercontent.com",
-
-  // 2) El ID de tu Google Sheet (el texto largo entre /d/ y /edit en la URL)
-  SHEET_ID: "1OZWZafDI7kbe5HLcXeDkVQXcyKFVCnVW00gswffXknE",
-
-  // 3) Tu correo de Google. Solo este correo podrá entrar.
+  CLIENT_ID:     "410581140938-ab6jclatatec2n3d2r7bonglfvi27a5f.apps.googleusercontent.com",
+  SHEET_ID:      "1OZWZafDI7kbe5HLcXeDkVQXcyKFVCnVW00gswffXknE",
   ALLOWED_EMAIL: "jhoace26@gmail.com"
 };
 
-/* Permisos que pedimos a Google:
-   - spreadsheets: leer/escribir tu hoja
-   - drive.file:   subir los PDF de diagnóstico (lo usaremos en la Fase 6)
-   - openid/email/profile: para saber quién inició sesión */
+/* Saludo pre-cargado en WhatsApp. {nombre} = primer nombre del cliente. */
+const WHATSAPP_SALUDO = "Hola {nombre}, te saluda Jhon de @jhonanaliza 👋";
+
 const SCOPES = "https://www.googleapis.com/auth/spreadsheets " +
-               "https://www.googleapis.com/auth/drive.file " +
-               "openid email profile";
+               "https://www.googleapis.com/auth/drive.file openid email profile";
+const ESTADOS = ["Lead no calificado", "Prospecto", "Cliente", "Perdido"];
+const API = "https://sheets.googleapis.com/v4/spreadsheets/" + CONFIG.SHEET_ID;
 
-let accessToken = null;   // el "pase" temporal que da Google (dura ~1 hora)
-let tokenClient = null;
+let accessToken = null, tokenClient = null;
+let clientes = [], estadoActivo = "Todos", vista = "cards";
+let editando = null;   // cliente en edición, o null si es nuevo
 
-/* ---- Referencias a la interfaz ---- */
-const viewLogin  = document.getElementById("view-login");
-const viewApp    = document.getElementById("view-app");
-const btnLogin   = document.getElementById("btn-login");
-const btnLogout  = document.getElementById("btn-logout");
-const btnTest    = document.getElementById("btn-test");
-const testResult = document.getElementById("test-result");
+const $ = (id) => document.getElementById(id);
+const viewLogin = $("view-login"), viewApp = $("view-app");
+const searchInput = $("search"), filtersEl = $("filters"), listContainer = $("list-container");
+const screenList = $("screen-list"), screenDetail = $("screen-detail"), fichaContent = $("ficha-content");
+const modal = $("modal-overlay");
 
-/* ---- Esperar a que cargue la librería de Google y preparar el login ---- */
+/* ============ LOGIN ============ */
 function initGoogle() {
-  if (!window.google || !google.accounts || !google.accounts.oauth2) {
-    return setTimeout(initGoogle, 200); // reintenta hasta que cargue
-  }
-  tokenClient = google.accounts.oauth2.initTokenClient({
-    client_id: CONFIG.CLIENT_ID,
-    scope: SCOPES,
-    callback: onToken   // se ejecuta cuando Google entrega el token
-  });
-  btnLogin.disabled = false;
+  if (!window.google || !google.accounts || !google.accounts.oauth2) return setTimeout(initGoogle, 200);
+  tokenClient = google.accounts.oauth2.initTokenClient({ client_id: CONFIG.CLIENT_ID, scope: SCOPES, callback: onToken });
 }
 initGoogle();
+$("btn-login").addEventListener("click", () => tokenClient && tokenClient.requestAccessToken());
 
-/* ---- Al hacer clic en "Iniciar sesión" ---- */
-btnLogin.addEventListener("click", () => {
-  if (!tokenClient) return;
-  tokenClient.requestAccessToken();  // abre la ventana de Google
+async function onToken(resp) {
+  if (resp.error) { alert("No se pudo iniciar sesión: " + resp.error); return; }
+  accessToken = resp.access_token;
+  try {
+    const r = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", { headers: auth() });
+    const user = await r.json();
+    if ((user.email || "").toLowerCase() !== CONFIG.ALLOWED_EMAIL.toLowerCase()) {
+      alert("Esta cuenta no está autorizada para este CRM."); accessToken = null; return;
+    }
+    $("user-name").textContent = user.name || "Jhon";
+    $("user-email").textContent = user.email;
+    $("avatar").textContent = (user.name || "J").trim().charAt(0).toUpperCase();
+    viewLogin.classList.add("hidden"); viewApp.classList.remove("hidden");
+    cargarClientes();
+  } catch (e) { alert("Error obteniendo tus datos de Google."); }
+}
+$("btn-logout").addEventListener("click", () => {
+  if (accessToken) google.accounts.oauth2.revoke(accessToken, () => {});
+  accessToken = null; clientes = [];
+  viewApp.classList.add("hidden"); viewLogin.classList.remove("hidden");
 });
 
-/* ---- Google nos devolvió un token ---- */
-async function onToken(resp) {
-  if (resp.error) {
-    alert("No se pudo iniciar sesión: " + resp.error);
+function auth() { return { Authorization: "Bearer " + accessToken }; }
+function authJSON() { return { Authorization: "Bearer " + accessToken, "Content-Type": "application/json" }; }
+
+/* ============ CARGAR ============ */
+async function cargarClientes() {
+  listContainer.innerHTML = '<div class="loading">Cargando clientes…</div>';
+  try {
+    const r = await fetch(API + "/values/Clientes!A2:J1000", { headers: auth() });
+    const data = await r.json();
+    if (data.error) throw new Error(data.error.message);
+    clientes = (data.values || []).map((f, i) => ({
+      fila: i + 2, id: f[0] || "", nombre: f[1] || "", telefono: f[2] || "", email: f[3] || "",
+      estado: f[4] || "Lead no calificado", origen: f[5] || "", etiquetas: f[6] || "",
+      fechaCreacion: f[7] || "", ultimoSeguimiento: f[8] || "", notas: f[9] || ""
+    })).filter(c => c.nombre.trim() !== "");
+    render();
+  } catch (e) {
+    listContainer.innerHTML = '<div class="empty"><strong>No se pudieron cargar los clientes</strong>' +
+      esc(e.message) + '<br><br>Si dice que el token expiró, cierra sesión y vuelve a entrar.</div>';
+  }
+}
+$("btn-refresh").addEventListener("click", cargarClientes);
+
+/* ============ FILTRAR ============ */
+function clientesFiltrados() {
+  const q = searchInput.value.trim().toLowerCase();
+  return clientes.filter(c => (estadoActivo === "Todos" || c.estado === estadoActivo) && c.nombre.toLowerCase().includes(q));
+}
+function claseEstado(e) { return e === "Cliente" ? "st-cliente" : e === "Prospecto" ? "st-prospecto" : e === "Perdido" ? "st-perdido" : "st-lead"; }
+
+/* ============ RENDER ============ */
+function render() {
+  renderFiltros();
+  const lista = clientesFiltrados();
+  if (clientes.length === 0) {
+    listContainer.innerHTML = '<div class="empty"><strong>Aún no tienes clientes</strong>Pulsa <b>+ Nuevo cliente</b> para agregar el primero. Se guardará solo en tu base.</div>';
     return;
   }
-  accessToken = resp.access_token;
+  if (lista.length === 0) { listContainer.innerHTML = '<div class="empty"><strong>Sin resultados</strong>Ningún cliente coincide con el filtro o la búsqueda.</div>'; return; }
+  listContainer.innerHTML = (vista === "cards") ? renderCards(lista) : renderTabla(lista);
+}
+function renderFiltros() {
+  const cuenta = (est) => clientes.filter(c => c.estado === est).length;
+  let html = chip("Todos", clientes.length, estadoActivo === "Todos");
+  ESTADOS.forEach(est => html += chip(est, cuenta(est), estadoActivo === est));
+  filtersEl.innerHTML = html;
+  filtersEl.querySelectorAll(".chip").forEach(ch => ch.addEventListener("click", () => { estadoActivo = ch.dataset.est; render(); }));
+}
+function chip(label, n, active) {
+  return '<button class="chip ' + (active ? "active" : "") + '" data-est="' + esc(label) + '">' + esc(label) + '<span class="count">' + n + '</span></button>';
+}
+function renderCards(lista) {
+  let html = '<div class="cards">';
+  lista.forEach(c => {
+    html += '<div class="client-card ' + claseEstado(c.estado) + '" data-id="' + esc(c.id) + '">' +
+      '<div class="cc-top"><div class="cc-name">' + esc(c.nombre) + '</div><span class="badge-estado">' + esc(c.estado) + '</span></div>' +
+      '<div class="cc-meta">' + (c.telefono ? '📱 ' + esc(c.telefono) + '<br>' : '') +
+      (c.ultimoSeguimiento ? '🕒 Últ. seguimiento: ' + esc(c.ultimoSeguimiento) : '<span style="opacity:.6">Sin seguimientos aún</span>') + '</div>' +
+      '<div class="cc-actions">' + botonWA(c) + '</div></div>';
+  });
+  return html + '</div>';
+}
+function renderTabla(lista) {
+  let html = '<div class="table-wrap"><table><thead><tr><th>Nombre</th><th>Estado</th><th>Teléfono</th><th>Últ. seguimiento</th><th></th></tr></thead><tbody>';
+  lista.forEach(c => {
+    html += '<tr data-id="' + esc(c.id) + '"><td class="td-name">' + esc(c.nombre) + '</td>' +
+      '<td class="' + claseEstado(c.estado) + '"><span class="badge-estado">' + esc(c.estado) + '</span></td>' +
+      '<td>' + (esc(c.telefono) || '—') + '</td><td>' + (esc(c.ultimoSeguimiento) || '—') + '</td>' +
+      '<td>' + botonWA(c) + '</td></tr>';
+  });
+  return html + '</tbody></table></div>';
+}
+listContainer.addEventListener("click", (e) => {
+  if (e.target.closest(".btn-wa")) return;
+  const item = e.target.closest("[data-id]");
+  if (item) abrirFicha(item.dataset.id);
+});
 
-  // Averiguar quién inició sesión (nombre + correo)
+/* ============ WHATSAPP ============ */
+function linkWA(c) {
+  const num = String(c.telefono).replace(/\D/g, "");
+  if (!num) return null;
+  const primer = c.nombre.trim().split(/\s+/)[0];
+  return "https://wa.me/" + num + "?text=" + encodeURIComponent(WHATSAPP_SALUDO.replace("{nombre}", primer));
+}
+function botonWA(c) {
+  const link = linkWA(c);
+  const icon = '<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.4 5 5.1-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4-1l-.3-.2-3 .8.8-2.9-.2-.3a8 8 0 1 1 6.7 3.6zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7.9-.3.2-.5 0a6.5 6.5 0 0 1-1.9-1.2 7.3 7.3 0 0 1-1.4-1.7c-.1-.2 0-.4.1-.5l.4-.4.2-.4a.4.4 0 0 0 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a.9.9 0 0 0-.6.3 2.6 2.6 0 0 0-.8 2 4.6 4.6 0 0 0 1 2.4 10.5 10.5 0 0 0 4 3.5c1.9.8 1.9.5 2.3.5a2.3 2.3 0 0 0 1.5-1.1 1.9 1.9 0 0 0 .1-1c-.1-.1-.2-.1-.4-.2z"/></svg>';
+  if (!link) return '<span class="btn-wa disabled">' + icon + 'Sin número</span>';
+  return '<a class="btn-wa" href="' + link + '" target="_blank" rel="noopener">' + icon + 'WhatsApp</a>';
+}
+
+/* ============ FICHA ============ */
+function abrirFicha(id) {
+  const c = clientes.find(x => x.id === id);
+  if (!c) return;
+  const link = linkWA(c);
+  fichaContent.innerHTML =
+    '<div class="ficha-head ' + claseEstado(c.estado) + '"><div class="ficha-avatar">' + esc((c.nombre||"?").trim().charAt(0).toUpperCase()) + '</div>' +
+    '<div><h2>' + esc(c.nombre) + '</h2><span class="badge-estado">' + esc(c.estado) + '</span></div></div>' +
+    '<div class="ficha-actions">' +
+      (link ? '<a class="btn-wa" href="' + link + '" target="_blank" rel="noopener">Escribir por WhatsApp</a>' : '<span class="btn-wa disabled">Sin número</span>') +
+      '<button class="btn-edit" onclick="editarCliente(\'' + esc(c.id) + '\')">✎ Editar</button>' +
+    '</div>' +
+    '<div class="datagrid">' + celda("Teléfono", c.telefono) + celda("Email", c.email) + celda("Origen", c.origen) +
+      celda("Etiquetas", c.etiquetas) + celda("Fecha de creación", c.fechaCreacion) + celda("Último seguimiento", c.ultimoSeguimiento) + '</div>' +
+    (c.notas ? '<div class="notas-block"><div class="k">Notas generales</div><div class="v">' + esc(c.notas) + '</div></div>' : '') +
+    '<div class="coming">📋 El <strong>historial de seguimientos</strong> y los <strong>documentos PDF</strong> de este cliente llegan en la <strong>Fase 3</strong>.</div>';
+  screenList.classList.add("hidden"); screenDetail.classList.remove("hidden"); window.scrollTo(0, 0);
+}
+function celda(k, v) { return '<div class="datacell"><div class="k">' + k + '</div><div class="v">' + (esc(v) || '—') + '</div></div>'; }
+$("btn-back").addEventListener("click", () => { screenDetail.classList.add("hidden"); screenList.classList.remove("hidden"); });
+
+/* ============ MODAL: CREAR / EDITAR ============ */
+function abrirModal(cliente) {
+  editando = cliente || null;
+  $("modal-title").textContent = editando ? "Editar cliente" : "Nuevo cliente";
+  $("modal-error").textContent = "";
+  $("f-nombre").value   = editando ? editando.nombre : "";
+  $("f-telefono").value = editando ? editando.telefono : "";
+  $("f-email").value    = editando ? editando.email : "";
+  $("f-estado").value   = editando ? editando.estado : "Lead no calificado";
+  $("f-origen").value   = editando ? editando.origen : "";
+  $("f-etiquetas").value= editando ? editando.etiquetas : "";
+  $("f-notas").value    = editando ? editando.notas : "";
+  modal.classList.remove("hidden");
+  $("f-nombre").focus();
+}
+function editarCliente(id) { const c = clientes.find(x => x.id === id); if (c) abrirModal(c); }
+$("btn-new").addEventListener("click", () => abrirModal(null));
+$("modal-cancel").addEventListener("click", () => modal.classList.add("hidden"));
+modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.add("hidden"); });
+
+$("modal-save").addEventListener("click", async () => {
+  const nombre = $("f-nombre").value.trim();
+  if (!nombre) { $("modal-error").textContent = "El nombre es obligatorio."; return; }
+
+  const btn = $("modal-save");
+  btn.disabled = true; btn.textContent = "Guardando…"; $("modal-error").textContent = "";
+
+  const datos = {
+    nombre,
+    telefono:  $("f-telefono").value.trim(),
+    email:     $("f-email").value.trim(),
+    estado:    $("f-estado").value,
+    origen:    $("f-origen").value.trim(),
+    etiquetas: $("f-etiquetas").value.trim(),
+    notas:     $("f-notas").value.trim()
+  };
+
   try {
-    const r = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-      headers: { Authorization: "Bearer " + accessToken }
-    });
-    const user = await r.json();
-
-    // Validar que sea TU correo autorizado
-    if ((user.email || "").toLowerCase() !== CONFIG.ALLOWED_EMAIL.toLowerCase()) {
-      alert("Esta cuenta no está autorizada para este CRM.");
-      accessToken = null;
-      return;
+    if (editando) {
+      // Actualiza la fila existente (conserva ID, fecha de creación y último seguimiento)
+      const row = [ editando.id, datos.nombre, datos.telefono, datos.email, datos.estado,
+                    datos.origen, datos.etiquetas, editando.fechaCreacion || hoyISO(),
+                    editando.ultimoSeguimiento || "", datos.notas ];
+      const r = await fetch(API + "/values/Clientes!A" + editando.fila + ":J" + editando.fila +
+                "?valueInputOption=USER_ENTERED", { method: "PUT", headers: authJSON(), body: JSON.stringify({ values: [row] }) });
+      const d = await r.json(); if (d.error) throw new Error(d.error.message);
+    } else {
+      // Crea una fila nueva al final
+      const id = "CLI-" + Date.now().toString(36).toUpperCase();
+      const row = [ id, datos.nombre, datos.telefono, datos.email, datos.estado,
+                    datos.origen, datos.etiquetas, hoyISO(), "", datos.notas ];
+      const r = await fetch(API + "/values/Clientes!A:J:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS",
+                { method: "POST", headers: authJSON(), body: JSON.stringify({ values: [row] }) });
+      const d = await r.json(); if (d.error) throw new Error(d.error.message);
     }
-    mostrarApp(user);
+    modal.classList.add("hidden");
+    const idEditado = editando ? editando.id : null;
+    await cargarClientes();
+    if (idEditado) abrirFicha(idEditado);  // reabre la ficha si venías editando
   } catch (e) {
-    alert("Error obteniendo tus datos de Google.");
-  }
-}
-
-/* ---- Mostrar la app ya autenticado ---- */
-function mostrarApp(user) {
-  document.getElementById("user-name").textContent  = user.name || "Jhon";
-  document.getElementById("user-email").textContent = user.email;
-  document.getElementById("avatar").textContent =
-    (user.name || "J").trim().charAt(0).toUpperCase();
-  viewLogin.classList.add("hidden");
-  viewApp.classList.remove("hidden");
-}
-
-/* ---- Cerrar sesión ---- */
-btnLogout.addEventListener("click", () => {
-  if (accessToken) google.accounts.oauth2.revoke(accessToken, () => {});
-  accessToken = null;
-  viewApp.classList.add("hidden");
-  viewLogin.classList.remove("hidden");
-  testResult.className = "result";
-});
-
-/* ---- Probar la conexión con el Sheet (lee los encabezados de "Clientes") ---- */
-btnTest.addEventListener("click", async () => {
-  if (!accessToken) return;
-  btnTest.disabled = true;
-  btnTest.textContent = "Consultando…";
-  testResult.className = "result";
-
-  const url = "https://sheets.googleapis.com/v4/spreadsheets/" +
-              CONFIG.SHEET_ID + "/values/Clientes!A1:J1";
-  try {
-    const r = await fetch(url, { headers: { Authorization: "Bearer " + accessToken } });
-    const data = await r.json();
-
-    if (data.error) throw new Error(data.error.message);
-
-    const headers = (data.values && data.values[0]) ? data.values[0] : [];
-    testResult.classList.add("show", "ok");
-    testResult.innerHTML = headers.length
-      ? "✔ Conexión exitosa. Encabezados leídos:<br><strong>" + headers.join(" · ") + "</strong>"
-      : "✔ Conexión exitosa, pero la fila 1 de 'Clientes' está vacía. Agrega los encabezados.";
-  } catch (e) {
-    testResult.classList.add("show", "err");
-    testResult.innerHTML = "✖ No se pudo leer el Sheet: " + e.message +
-      "<br>Revisa el SHEET_ID y que la pestaña se llame exactamente 'Clientes'.";
+    $("modal-error").textContent = "No se pudo guardar: " + e.message;
   } finally {
-    btnTest.disabled = false;
-    btnTest.textContent = "Probar conexión con el Sheet";
+    btn.disabled = false; btn.textContent = "Guardar cliente";
   }
 });
+
+/* ============ EVENTOS LISTA ============ */
+searchInput.addEventListener("input", render);
+$("view-cards").addEventListener("click", function(){ vista="cards"; this.classList.add("active"); $("view-table").classList.remove("active"); render(); });
+$("view-table").addEventListener("click", function(){ vista="table"; this.classList.add("active"); $("view-cards").classList.remove("active"); render(); });
+
+/* ============ UTIL ============ */
+function hoyISO(){ const d=new Date(), z=n=>String(n).padStart(2,"0"); return d.getFullYear()+"-"+z(d.getMonth()+1)+"-"+z(d.getDate()); }
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
 </script>
 </body>
 </html>
