@@ -38,8 +38,8 @@
   .hint { margin-top: 18px; font-size: 12.5px; color: var(--slate); text-align: center; line-height: 1.5; }
 
   /* APP */
-  .app-wrap { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 26px 18px 90px; animation: rise .5s cubic-bezier(.2,.8,.2,1) both; }
-  .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  .app-wrap { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 26px 18px 90px; animation: rise .5s cubic-bezier(.2,.8,.2,1) both; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
   .who { display: flex; align-items: center; gap: 12px; }
   .avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), var(--gold-lt)); display: flex; align-items: center; justify-content: center; font-family: "Fraunces", serif; font-weight: 600; color: var(--navy-900); font-size: 18px; }
   .who .meta small { color: var(--slate); font-size: 12.5px; display: block; }
@@ -47,10 +47,51 @@
   .btn-ghost { background: transparent; color: var(--slate); border: 1px solid var(--navy-700); border-radius: 10px; padding: 8px 14px; font-size: 13px; font-weight: 500; cursor: pointer; transition: color .15s, border-color .15s; }
   .btn-ghost:hover { color: var(--cream); border-color: var(--slate); }
 
-  .toolbar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  /* NAV */
+  .nav { display: flex; gap: 6px; background: var(--navy-800); border: 1px solid var(--navy-700); border-radius: 12px; padding: 5px; margin-bottom: 22px; width: fit-content; }
+  .nav-btn { background: transparent; color: var(--slate); border: none; border-radius: 8px; padding: 9px 20px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all .15s; }
+  .nav-btn.active { background: var(--gold); color: var(--navy-900); }
+
+  /* DASHBOARD */
+  .dash-hd { font-family: "Fraunces", serif; font-size: 26px; font-weight: 600; margin-bottom: 4px; }
+  .dash-sub { color: var(--slate); font-size: 14px; margin-bottom: 22px; }
+  .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 26px; }
+  .stat { background: var(--navy-800); border: 1px solid var(--navy-700); border-radius: 12px; padding: 14px 12px; text-align: center; }
+  .stat .num { font-family: "Fraunces", serif; font-size: 24px; font-weight: 600; color: var(--gold-lt); }
+  .stat .lbl { font-size: 11px; color: var(--slate); margin-top: 3px; line-height: 1.3; }
+  @media (max-width: 560px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+  .dash-section { margin-bottom: 26px; }
+  .dash-section > h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--slate); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .dash-section > h3 .n { background: var(--navy-700); color: var(--cream); border-radius: 999px; padding: 1px 9px; font-size: 12px; }
+
+  .task { display: flex; align-items: center; gap: 12px; background: var(--navy-800); border: 1px solid var(--navy-700); border-left-width: 3px; border-radius: 12px; padding: 13px 15px; margin-bottom: 9px; cursor: pointer; transition: border-color .15s, transform .12s; }
+  .task:hover { transform: translateX(2px); border-color: var(--gold); }
+  .task.venc { border-left-color: var(--danger); }
+  .task.hoy  { border-left-color: var(--gold); }
+  .task.prox { border-left-color: var(--slate); }
+  .task .t-main { flex: 1; min-width: 0; }
+  .task .t-name { font-weight: 600; font-size: 14.5px; }
+  .task .t-accion { color: var(--slate); font-size: 13px; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .task .t-when { font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .task.venc .t-when { color: var(--danger); }
+  .task.hoy  .t-when { color: var(--gold-lt); }
+  .task.prox .t-when { color: var(--slate); }
+  .task .t-done { background: transparent; border: 1px solid var(--navy-700); color: var(--slate); border-radius: 8px; padding: 6px 9px; font-size: 13px; cursor: pointer; transition: all .15s; }
+  .task .t-done:hover { border-color: var(--ok); color: var(--ok); }
+  .cold { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--navy-800); border: 1px solid var(--navy-700); border-radius: 12px; padding: 12px 15px; margin-bottom: 9px; cursor: pointer; transition: border-color .15s; }
+  .cold:hover { border-color: var(--gold); }
+  .cold .c-name { font-weight: 600; font-size: 14px; }
+  .cold .c-sub { color: var(--slate); font-size: 12.5px; margin-top: 2px; }
+  .dash-empty { color: var(--slate); font-size: 13.5px; padding: 14px; border: 1px dashed var(--navy-700); border-radius: 12px; text-align: center; }
+
+  /* LISTA */
+  .toolbar { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
   .search { flex: 1; min-width: 150px; background: var(--navy-800); border: 1px solid var(--navy-700); border-radius: 11px; padding: 11px 14px; color: var(--cream); font-family: "Inter", sans-serif; font-size: 14px; }
   .search::placeholder { color: var(--slate); }
   .search:focus { outline: none; border-color: var(--gold); }
+  select.filtro-sel { flex: 0 0 auto; min-width: 140px; background: var(--navy-800); border: 1px solid var(--navy-700); border-radius: 11px; padding: 11px 12px; color: var(--cream); font-family: "Inter", sans-serif; font-size: 13.5px; cursor: pointer; }
+  select.filtro-sel:focus { outline: none; border-color: var(--gold); }
   .toggle { display: flex; background: var(--navy-800); border: 1px solid var(--navy-700); border-radius: 11px; overflow: hidden; }
   .toggle button { background: transparent; color: var(--slate); border: none; padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; }
   .toggle button.active { background: var(--gold); color: var(--navy-900); }
@@ -65,23 +106,10 @@
   .chip.active { background: var(--cream); color: var(--navy-900); border-color: var(--cream); font-weight: 600; }
   .chip .count { opacity: .65; margin-left: 5px; font-size: 12px; }
 
-  .st-lead { --stc: var(--slate); }
-  .st-prospecto { --stc: var(--gold-lt); }
-  .st-cliente { --stc: var(--ok); }
-  .st-perdido { --stc: var(--danger); }
+  .st-lead { --stc: var(--slate); } .st-prospecto { --stc: var(--gold-lt); } .st-cliente { --stc: var(--ok); } .st-perdido { --stc: var(--danger); }
   .badge-estado { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--stc); background: color-mix(in srgb, var(--stc) 12%, transparent); border: 1px solid color-mix(in srgb, var(--stc) 32%, transparent); border-radius: 999px; padding: 3px 10px; }
   .badge-estado::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--stc); }
-
-  /* Estado como dropdown inline */
-  .estado-select {
-    appearance: none; -webkit-appearance: none;
-    font-family: "Inter", sans-serif; font-size: 12px; font-weight: 600;
-    color: var(--stc); background-color: color-mix(in srgb, var(--stc) 12%, transparent);
-    border: 1px solid color-mix(in srgb, var(--stc) 32%, transparent);
-    border-radius: 999px; padding: 4px 26px 4px 12px; cursor: pointer;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'><path d='M1 1l4 4 4-4' stroke='%23C9A227' stroke-width='1.5'/></svg>");
-    background-repeat: no-repeat; background-position: right 9px center;
-  }
+  .estado-select { appearance: none; -webkit-appearance: none; font-family: "Inter", sans-serif; font-size: 12px; font-weight: 600; color: var(--stc); background-color: color-mix(in srgb, var(--stc) 12%, transparent); border: 1px solid color-mix(in srgb, var(--stc) 32%, transparent); border-radius: 999px; padding: 4px 26px 4px 12px; cursor: pointer; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'><path d='M1 1l4 4 4-4' stroke='%23C9A227' stroke-width='1.5'/></svg>"); background-repeat: no-repeat; background-position: right 9px center; }
   .estado-select:focus { outline: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--stc) 40%, transparent); }
   .estado-select option { background: var(--navy-800); color: var(--cream); }
 
@@ -127,8 +155,27 @@
   .notas-block { background: var(--navy-800); border: 1px solid var(--navy-700); border-radius: 14px; padding: 16px 18px; margin-bottom: 18px; }
   .notas-block .k { color: var(--slate); font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 8px; }
   .notas-block .v { font-size: 14.5px; line-height: 1.6; color: var(--cream); }
-  .coming { border: 1px dashed var(--navy-700); border-radius: 14px; padding: 20px; text-align: center; color: var(--slate); font-size: 13.5px; line-height: 1.6; }
-  .coming strong { color: var(--gold-lt); }
+
+  /* Próxima acción */
+  .pa-box { background: linear-gradient(180deg, rgba(201,162,39,0.08), transparent); border: 1px solid color-mix(in srgb, var(--gold) 30%, transparent); border-radius: 14px; padding: 16px 18px; margin-bottom: 18px; }
+  .pa-box .k { color: var(--gold-lt); font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 10px; font-weight: 600; }
+  .pa-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pa-row input[type=text] { flex: 1; min-width: 160px; background: var(--navy-900); border: 1px solid var(--navy-700); border-radius: 10px; padding: 10px 12px; color: var(--cream); font-family: "Inter"; font-size: 14px; }
+  .pa-row input[type=date] { background: var(--navy-900); border: 1px solid var(--navy-700); border-radius: 10px; padding: 10px 12px; color: var(--cream); font-family: "Inter"; font-size: 14px; }
+  .pa-row input:focus { outline: none; border-color: var(--gold); }
+
+  /* Seguimientos */
+  .seg-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .seg-head .k { color: var(--slate); font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+  .btn-seg { background: var(--navy-700); color: var(--cream); border: none; border-radius: 9px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background .15s; }
+  .btn-seg:hover { background: var(--navy-800); }
+  .seg-item { display: flex; gap: 12px; padding: 13px 0; border-bottom: 1px solid rgba(23,52,92,0.6); }
+  .seg-item:last-child { border-bottom: none; }
+  .seg-tipo { flex: 0 0 auto; font-size: 11px; font-weight: 600; color: var(--gold-lt); background: rgba(201,162,39,0.12); border: 1px solid color-mix(in srgb, var(--gold) 30%, transparent); border-radius: 999px; padding: 3px 10px; height: fit-content; }
+  .seg-body { flex: 1; }
+  .seg-fecha { color: var(--slate); font-size: 12px; margin-bottom: 3px; }
+  .seg-desc { font-size: 14px; line-height: 1.5; }
+  .seg-empty { color: var(--slate); font-size: 13.5px; padding: 16px; text-align: center; border: 1px dashed var(--navy-700); border-radius: 12px; }
 
   /* MODAL */
   .modal-overlay { position: fixed; inset: 0; z-index: 50; background: rgba(5,12,26,0.72); backdrop-filter: blur(3px); display: flex; align-items: flex-start; justify-content: center; padding: 30px 16px; overflow-y: auto; }
@@ -149,14 +196,12 @@
   .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(201,162,39,.3); }
   .btn-gold:disabled { opacity: .5; cursor: default; transform: none; box-shadow: none; }
 
-  /* Importador CSV */
   .file-input { width: 100%; background: var(--navy-900); border: 1px dashed var(--navy-700); border-radius: 12px; padding: 22px 14px; color: var(--slate); font-family: "Inter", sans-serif; font-size: 13.5px; cursor: pointer; margin-bottom: 14px; }
   .file-input::file-selector-button { background: var(--gold); color: var(--navy-900); border: none; border-radius: 8px; padding: 8px 14px; font-weight: 600; font-family: "Inter"; margin-right: 12px; cursor: pointer; }
   .csv-preview { background: var(--navy-900); border: 1px solid var(--navy-700); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; font-size: 13.5px; line-height: 1.6; }
   .csv-preview .big { color: var(--gold-lt); font-weight: 600; font-family: "Fraunces", serif; font-size: 18px; }
   .csv-preview ul { margin: 8px 0 0 18px; color: var(--slate); }
 
-  /* Toast */
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--navy-800); border: 1px solid var(--gold); color: var(--cream); padding: 12px 22px; border-radius: 12px; z-index: 100; font-size: 14px; font-weight: 500; box-shadow: 0 12px 34px rgba(0,0,0,.45); }
 
   @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
@@ -191,13 +236,24 @@
     <button id="btn-logout" class="btn-ghost">Cerrar sesión</button>
   </div>
 
-  <div id="screen-list">
+  <div class="nav">
+    <button id="nav-hoy" class="nav-btn active">Hoy</button>
+    <button id="nav-clientes" class="nav-btn">Clientes</button>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="screen-dashboard">
+    <div class="dash-hd">Tu día</div>
+    <div class="dash-sub" id="dash-fecha"></div>
+    <div id="dash-content"><div class="loading">Cargando…</div></div>
+  </div>
+
+  <!-- LISTA -->
+  <div id="screen-list" class="hidden">
     <div class="toolbar">
-      <input id="search" class="search" type="text" placeholder="Buscar por nombre…" />
-      <div class="toggle">
-        <button id="view-cards" class="active">Tarjetas</button>
-        <button id="view-table">Tabla</button>
-      </div>
+      <input id="search" class="search" type="text" placeholder="Buscar por nombre, teléfono o correo…" />
+      <select id="origen-filter" class="filtro-sel"></select>
+      <div class="toggle"><button id="view-cards" class="active">Tarjetas</button><button id="view-table">Tabla</button></div>
       <button id="btn-refresh" class="btn-icon" title="Actualizar">⟳</button>
       <button id="btn-import" class="btn-icon">⭳ Importar CSV</button>
       <button id="btn-new" class="btn-new">+ Nuevo cliente</button>
@@ -206,8 +262,9 @@
     <div id="list-container"><div class="loading">Cargando clientes…</div></div>
   </div>
 
+  <!-- FICHA -->
   <div id="screen-detail" class="hidden">
-    <button id="btn-back" class="btn-back">← Volver al listado</button>
+    <button id="btn-back" class="btn-back">← Volver</button>
     <div id="ficha-content"></div>
   </div>
 </div>
@@ -220,11 +277,7 @@
       <div class="fld"><label>Nombre completo *</label><input id="f-nombre" type="text" /></div>
       <div class="fld"><label>Teléfono (ej. 573001234567)</label><input id="f-telefono" type="text" inputmode="numeric" /></div>
       <div class="fld"><label>Email</label><input id="f-email" type="email" /></div>
-      <div class="fld"><label>Estado</label>
-        <select id="f-estado">
-          <option>Lead no calificado</option><option>Prospecto</option><option>Cliente</option><option>Perdido</option>
-        </select>
-      </div>
+      <div class="fld"><label>Estado</label><select id="f-estado"><option>Lead no calificado</option><option>Prospecto</option><option>Cliente</option><option>Perdido</option></select></div>
       <div class="fld"><label>Origen</label><input id="f-origen" type="text" placeholder="Referido, Instagram…" /></div>
       <div class="fld"><label>Etiquetas</label><input id="f-etiquetas" type="text" placeholder="pensión, alto patrimonio…" /></div>
       <div class="fld full"><label>Notas generales</label><textarea id="f-notas"></textarea></div>
@@ -252,6 +305,25 @@
   </div>
 </div>
 
+<!-- MODAL seguimiento -->
+<div id="seg-overlay" class="modal-overlay hidden">
+  <div class="modal">
+    <h3>Registrar seguimiento</h3>
+    <div class="form-grid">
+      <div class="fld"><label>Tipo</label><select id="seg-tipo">
+        <option>Llamada</option><option>WhatsApp</option><option>Reunión</option><option>Email</option><option>Nota</option><option>Videollamada</option><option>Cita presencial</option>
+      </select></div>
+      <div class="fld"><label>Fecha</label><input id="seg-fecha" type="date" /></div>
+      <div class="fld full"><label>Descripción / notas de la interacción</label><textarea id="seg-desc" placeholder="¿Qué se habló? ¿En qué quedaron?"></textarea></div>
+    </div>
+    <div id="seg-error" class="modal-error"></div>
+    <div class="modal-actions">
+      <button id="seg-cancel" class="btn-ghost">Cancelar</button>
+      <button id="seg-save" class="btn-gold">Guardar seguimiento</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ================================================================
    CONFIGURACIÓN — ya viene lista con tus valores. No tocar.
@@ -262,20 +334,23 @@ const CONFIG = {
   ALLOWED_EMAIL: "jhoace26@gmail.com"
 };
 const WHATSAPP_SALUDO = "Hola {nombre}, te saluda Jhon de @jhonanaliza 👋";
+const DIAS_FRIO = 30; // días sin seguimiento para marcar un cliente como "frío"
 
 const SCOPES = "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file openid email profile";
 const ESTADOS = ["Lead no calificado", "Prospecto", "Cliente", "Perdido"];
 const API = "https://sheets.googleapis.com/v4/spreadsheets/" + CONFIG.SHEET_ID;
 
 let accessToken = null, tokenClient = null;
-let clientes = [], estadoActivo = "Todos", vista = "cards";
-let editando = null, csvContactos = [];
+let clientes = [], seguimientos = [];
+let estadoActivo = "Todos", origenActivo = "Todos", vista = "cards";
+let editando = null, csvContactos = [], clienteActivo = null, pantallaAnterior = "screen-dashboard";
 
 const $ = (id) => document.getElementById(id);
 const viewLogin = $("view-login"), viewApp = $("view-app");
 const searchInput = $("search"), filtersEl = $("filters"), listContainer = $("list-container");
-const screenList = $("screen-list"), screenDetail = $("screen-detail"), fichaContent = $("ficha-content");
-const modal = $("modal-overlay"), importModal = $("import-overlay");
+const screenDash = $("screen-dashboard"), screenList = $("screen-list"), screenDetail = $("screen-detail");
+const fichaContent = $("ficha-content");
+const modal = $("modal-overlay"), importModal = $("import-overlay"), segModal = $("seg-overlay");
 
 /* ============ LOGIN ============ */
 function initGoogle() {
@@ -298,41 +373,171 @@ async function onToken(resp) {
     $("user-email").textContent = user.email;
     $("avatar").textContent = (user.name || "J").trim().charAt(0).toUpperCase();
     viewLogin.classList.add("hidden"); viewApp.classList.remove("hidden");
-    cargarClientes();
+    $("dash-fecha").textContent = fechaLarga();
+    await asegurarEsquema();
+    refrescar();
   } catch (e) { alert("Error obteniendo tus datos de Google."); }
 }
 $("btn-logout").addEventListener("click", () => {
   if (accessToken) google.accounts.oauth2.revoke(accessToken, () => {});
-  accessToken = null; clientes = [];
+  accessToken = null; clientes = []; seguimientos = [];
   viewApp.classList.add("hidden"); viewLogin.classList.remove("hidden");
 });
 function auth() { return { Authorization: "Bearer " + accessToken }; }
 function authJSON() { return { Authorization: "Bearer " + accessToken, "Content-Type": "application/json" }; }
 
-/* ============ CARGAR ============ */
-async function cargarClientes() {
-  listContainer.innerHTML = '<div class="loading">Cargando clientes…</div>';
+/* ============ AUTO-PROVISIÓN DE ESQUEMA ============
+   Crea la pestaña Seguimientos y las columnas Próxima acción
+   la primera vez. Es idempotente: seguro de correr siempre. */
+async function asegurarEsquema() {
   try {
-    const r = await fetch(API + "/values/Clientes!A2:J1000", { headers: auth() });
+    const r = await fetch(API + "?fields=sheets.properties.title", { headers: auth() });
+    const meta = await r.json();
+    const titulos = (meta.sheets || []).map(s => s.properties.title);
+    if (!titulos.includes("Seguimientos")) {
+      await fetch(API + ":batchUpdate", { method: "POST", headers: authJSON(),
+        body: JSON.stringify({ requests: [{ addSheet: { properties: { title: "Seguimientos" } } }] }) });
+      await fetch(API + "/values/Seguimientos!A1:E1?valueInputOption=RAW", { method: "PUT", headers: authJSON(),
+        body: JSON.stringify({ values: [["ID_Seguimiento", "ID_Cliente", "Fecha", "Tipo", "Descripcion"]] }) });
+    }
+    // Encabezados de columnas nuevas en Clientes (K y L)
+    await fetch(API + "/values/Clientes!K1:L1?valueInputOption=RAW", { method: "PUT", headers: authJSON(),
+      body: JSON.stringify({ values: [["Proxima_Accion", "Proxima_Fecha"]] }) });
+  } catch (e) { console.warn("No se pudo preparar el esquema:", e); }
+}
+
+/* ============ CARGA DE DATOS ============ */
+async function refrescar() {
+  listContainer.innerHTML = '<div class="loading">Cargando…</div>';
+  $("dash-content").innerHTML = '<div class="loading">Cargando…</div>';
+  await Promise.all([cargarClientes(), cargarSeguimientos()]);
+  renderOrigenFilter();
+  renderDashboard();
+  render();
+}
+async function cargarClientes() {
+  try {
+    const r = await fetch(API + "/values/Clientes!A2:L1000", { headers: auth() });
     const data = await r.json();
     if (data.error) throw new Error(data.error.message);
     clientes = (data.values || []).map((f, i) => ({
       fila: i + 2, id: f[0] || "", nombre: f[1] || "", telefono: f[2] || "", email: f[3] || "",
       estado: f[4] || "Lead no calificado", origen: f[5] || "", etiquetas: f[6] || "",
-      fechaCreacion: f[7] || "", ultimoSeguimiento: f[8] || "", notas: f[9] || ""
+      fechaCreacion: f[7] || "", ultimoSeguimiento: f[8] || "", notas: f[9] || "",
+      proximaAccion: f[10] || "", proximaFecha: f[11] || ""
     })).filter(c => c.nombre.trim() !== "");
-    render();
   } catch (e) {
-    listContainer.innerHTML = '<div class="empty"><strong>No se pudieron cargar los clientes</strong>' +
-      esc(e.message) + '<br><br>Si dice que el token expiró, cierra sesión y vuelve a entrar.</div>';
+    clientes = [];
+    listContainer.innerHTML = '<div class="empty"><strong>No se pudieron cargar los clientes</strong>' + esc(e.message) + '<br><br>Si el token expiró, cierra sesión y vuelve a entrar.</div>';
   }
 }
-$("btn-refresh").addEventListener("click", cargarClientes);
+async function cargarSeguimientos() {
+  try {
+    const r = await fetch(API + "/values/Seguimientos!A2:E2000", { headers: auth() });
+    const data = await r.json();
+    if (data.error) throw new Error(data.error.message);
+    seguimientos = (data.values || []).map(f => ({ id: f[0] || "", idCliente: f[1] || "", fecha: f[2] || "", tipo: f[3] || "", descripcion: f[4] || "" }))
+      .filter(s => s.idCliente);
+  } catch (e) { seguimientos = []; }
+}
+$("btn-refresh").addEventListener("click", refrescar);
 
-/* ============ FILTRAR ============ */
+/* ============ NAVEGACIÓN ============ */
+function mostrar(screen) {
+  [screenDash, screenList, screenDetail].forEach(s => s.classList.add("hidden"));
+  $(screen).classList.remove("hidden");
+}
+$("nav-hoy").addEventListener("click", () => { $("nav-hoy").classList.add("active"); $("nav-clientes").classList.remove("active"); mostrar("screen-dashboard"); });
+$("nav-clientes").addEventListener("click", () => { $("nav-clientes").classList.add("active"); $("nav-hoy").classList.remove("active"); mostrar("screen-list"); });
+$("btn-back").addEventListener("click", () => mostrar(pantallaAnterior));
+
+/* ============ DASHBOARD ============ */
+function renderDashboard() {
+  const cont = $("dash-content");
+  const hoy = hoyISO();
+  const conAccion = clientes.filter(c => c.proximaFecha);
+  const vencidas = conAccion.filter(c => c.proximaFecha < hoy).sort((a,b)=>a.proximaFecha.localeCompare(b.proximaFecha));
+  const deHoy    = conAccion.filter(c => c.proximaFecha === hoy);
+  const proximas = conAccion.filter(c => c.proximaFecha > hoy).sort((a,b)=>a.proximaFecha.localeCompare(b.proximaFecha));
+  const limite = restarDias(hoy, DIAS_FRIO);
+  const frios = clientes.filter(c => (c.estado === "Prospecto" || c.estado === "Cliente") && (!c.ultimoSeguimiento || c.ultimoSeguimiento < limite))
+                        .sort((a,b)=>(a.ultimoSeguimiento||"").localeCompare(b.ultimoSeguimiento||""));
+
+  const cuenta = est => clientes.filter(c => c.estado === est).length;
+  let html = '<div class="stats">' +
+    stat(clientes.length, "Total") + stat(cuenta("Lead no calificado"), "Leads") +
+    stat(cuenta("Prospecto"), "Prospectos") + stat(cuenta("Cliente"), "Clientes") + stat(cuenta("Perdido"), "Perdidos") +
+    '</div>';
+
+  html += seccionTareas("Vencidas", vencidas, "venc", "🎉 Nada vencido. Vas al día.");
+  html += seccionTareas("Para hoy", deHoy, "hoy", "No tienes acciones para hoy.");
+  html += seccionTareas("Próximas", proximas.slice(0, 15), "prox", "No hay acciones futuras programadas.");
+
+  html += '<div class="dash-section"><h3>Clientes que se están enfriando <span class="n">' + frios.length + '</span></h3>';
+  if (frios.length === 0) html += '<div class="dash-empty">Todos tus prospectos y clientes tienen seguimiento reciente. 👏</div>';
+  else html += frios.slice(0, 10).map(c => {
+    const dias = c.ultimoSeguimiento ? diffDias(c.ultimoSeguimiento, hoy) : null;
+    const txt = dias === null ? "Nunca registrado" : "Hace " + dias + " días";
+    return '<div class="cold" data-id="' + esc(c.id) + '"><div><div class="c-name">' + esc(c.nombre) + '</div>' +
+      '<div class="c-sub">' + esc(c.estado) + ' · último seguimiento: ' + txt + '</div></div>' + botonWA(c) + '</div>';
+  }).join("");
+  html += '</div>';
+
+  cont.innerHTML = html;
+}
+function stat(n, lbl) { return '<div class="stat"><div class="num">' + n + '</div><div class="lbl">' + lbl + '</div></div>'; }
+function seccionTareas(titulo, lista, cls, vacio) {
+  let h = '<div class="dash-section"><h3>' + titulo + ' <span class="n">' + lista.length + '</span></h3>';
+  if (lista.length === 0) { h += '<div class="dash-empty">' + vacio + '</div></div>'; return h; }
+  const hoy = hoyISO();
+  h += lista.map(c => {
+    const d = diffDias(hoy, c.proximaFecha);
+    let cuando = cls === "hoy" ? "Hoy" : (d < 0 ? "Hace " + Math.abs(d) + "d" : (d === 1 ? "Mañana" : "En " + d + "d"));
+    return '<div class="task ' + cls + '" data-id="' + esc(c.id) + '">' +
+      '<div class="t-main"><div class="t-name">' + esc(c.nombre) + '</div><div class="t-accion">' + (esc(c.proximaAccion) || "Sin descripción") + '</div></div>' +
+      '<div class="t-when">' + cuando + '</div>' +
+      '<button class="t-done" data-done="' + esc(c.id) + '" title="Marcar como hecha">✓</button></div>';
+  }).join("");
+  return h + '</div>';
+}
+$("dash-content").addEventListener("click", (e) => {
+  const done = e.target.closest("[data-done]");
+  if (done) { completarAccion(done.dataset.done); return; }
+  if (e.target.closest(".btn-wa")) return;
+  const item = e.target.closest("[data-id]");
+  if (item) { pantallaAnterior = "screen-dashboard"; abrirFicha(item.dataset.id); }
+});
+async function completarAccion(id) {
+  const c = clientes.find(x => x.id === id); if (!c) return;
+  try {
+    await fetch(API + "/values/Clientes!K" + c.fila + ":L" + c.fila + "?valueInputOption=USER_ENTERED",
+      { method: "PUT", headers: authJSON(), body: JSON.stringify({ values: [["", ""]] }) });
+    c.proximaAccion = ""; c.proximaFecha = "";
+    renderDashboard(); toast("Acción completada");
+  } catch (e) { toast("No se pudo actualizar"); }
+}
+
+/* ============ FILTRAR LISTA ============ */
+function renderOrigenFilter() {
+  const origenes = [...new Set(clientes.map(c => c.origen).filter(o => o.trim() !== ""))].sort();
+  const sel = $("origen-filter");
+  sel.innerHTML = '<option value="Todos">Todos los orígenes</option>' + origenes.map(o => '<option value="' + esc(o) + '"' + (o === origenActivo ? " selected" : "") + '>' + esc(o) + '</option>').join("");
+}
 function clientesFiltrados() {
   const q = searchInput.value.trim().toLowerCase();
-  return clientes.filter(c => (estadoActivo === "Todos" || c.estado === estadoActivo) && c.nombre.toLowerCase().includes(q));
+  const qDig = q.replace(/\D/g, "");
+  return clientes.filter(c => {
+    const okEstado = estadoActivo === "Todos" || c.estado === estadoActivo;
+    const okOrigen = origenActivo === "Todos" || c.origen === origenActivo;
+    let okBusq = true;
+    if (q) {
+      const enNom = c.nombre.toLowerCase().includes(q);
+      const enMail = (c.email || "").toLowerCase().includes(q);
+      const enTel = qDig && String(c.telefono).replace(/\D/g, "").includes(qDig);
+      okBusq = enNom || enMail || enTel;
+    }
+    return okEstado && okOrigen && okBusq;
+  });
 }
 function claseEstado(e) { return e === "Cliente" ? "st-cliente" : e === "Prospecto" ? "st-prospecto" : e === "Perdido" ? "st-perdido" : "st-lead"; }
 function selectEstado(c) {
@@ -340,15 +545,12 @@ function selectEstado(c) {
   return '<select class="estado-select ' + claseEstado(c.estado) + '" data-id="' + esc(c.id) + '" data-fila="' + c.fila + '">' + opts + '</select>';
 }
 
-/* ============ RENDER ============ */
+/* ============ RENDER LISTA ============ */
 function render() {
   renderFiltros();
   const lista = clientesFiltrados();
-  if (clientes.length === 0) {
-    listContainer.innerHTML = '<div class="empty"><strong>Aún no tienes clientes</strong>Pulsa <b>+ Nuevo cliente</b> o <b>Importar CSV</b> para empezar.</div>';
-    return;
-  }
-  if (lista.length === 0) { listContainer.innerHTML = '<div class="empty"><strong>Sin resultados</strong>Ningún cliente coincide con el filtro o la búsqueda.</div>'; return; }
+  if (clientes.length === 0) { listContainer.innerHTML = '<div class="empty"><strong>Aún no tienes clientes</strong>Pulsa <b>+ Nuevo cliente</b> o <b>Importar CSV</b> para empezar.</div>'; return; }
+  if (lista.length === 0) { listContainer.innerHTML = '<div class="empty"><strong>Sin resultados</strong>Ningún cliente coincide con los filtros o la búsqueda.</div>'; return; }
   listContainer.innerHTML = (vista === "cards") ? renderCards(lista) : renderTabla(lista);
 }
 function renderFiltros() {
@@ -358,14 +560,11 @@ function renderFiltros() {
   filtersEl.innerHTML = html;
   filtersEl.querySelectorAll(".chip").forEach(ch => ch.addEventListener("click", () => { estadoActivo = ch.dataset.est; render(); }));
 }
-function chip(label, n, active) {
-  return '<button class="chip ' + (active ? "active" : "") + '" data-est="' + esc(label) + '">' + esc(label) + '<span class="count">' + n + '</span></button>';
-}
+function chip(label, n, active) { return '<button class="chip ' + (active ? "active" : "") + '" data-est="' + esc(label) + '">' + esc(label) + '<span class="count">' + n + '</span></button>'; }
 function renderCards(lista) {
   let html = '<div class="cards">';
   lista.forEach(c => {
-    html += '<div class="client-card" data-id="' + esc(c.id) + '">' +
-      '<div class="cc-top"><div class="cc-name">' + esc(c.nombre) + '</div>' + selectEstado(c) + '</div>' +
+    html += '<div class="client-card" data-id="' + esc(c.id) + '"><div class="cc-top"><div class="cc-name">' + esc(c.nombre) + '</div>' + selectEstado(c) + '</div>' +
       '<div class="cc-meta">' + (c.telefono ? '📱 ' + esc(c.telefono) + '<br>' : '') +
       (c.ultimoSeguimiento ? '🕒 Últ. seguimiento: ' + esc(c.ultimoSeguimiento) : '<span style="opacity:.6">Sin seguimientos aún</span>') + '</div>' +
       '<div class="cc-actions">' + botonWA(c) + '</div></div>';
@@ -375,37 +574,35 @@ function renderCards(lista) {
 function renderTabla(lista) {
   let html = '<div class="table-wrap"><table><thead><tr><th>Nombre</th><th>Estado</th><th>Teléfono</th><th>Últ. seguimiento</th><th></th></tr></thead><tbody>';
   lista.forEach(c => {
-    html += '<tr data-id="' + esc(c.id) + '"><td class="td-name">' + esc(c.nombre) + '</td>' +
-      '<td>' + selectEstado(c) + '</td>' +
-      '<td>' + (esc(c.telefono) || '—') + '</td><td>' + (esc(c.ultimoSeguimiento) || '—') + '</td>' +
-      '<td>' + botonWA(c) + '</td></tr>';
+    html += '<tr data-id="' + esc(c.id) + '"><td class="td-name">' + esc(c.nombre) + '</td><td>' + selectEstado(c) + '</td>' +
+      '<td>' + (esc(c.telefono) || '—') + '</td><td>' + (esc(c.ultimoSeguimiento) || '—') + '</td><td>' + botonWA(c) + '</td></tr>';
   });
   return html + '</tbody></table></div>';
 }
-
-/* Abrir ficha al tocar (ignora WhatsApp y el dropdown de estado) */
 listContainer.addEventListener("click", (e) => {
   if (e.target.closest(".btn-wa") || e.target.closest(".estado-select")) return;
   const item = e.target.closest("[data-id]");
-  if (item) abrirFicha(item.dataset.id);
+  if (item) { pantallaAnterior = "screen-list"; abrirFicha(item.dataset.id); }
 });
-/* Cambiar estado desde el listado */
 listContainer.addEventListener("change", (e) => {
   const sel = e.target.closest(".estado-select");
   if (sel) cambiarEstado(sel.dataset.id, parseInt(sel.dataset.fila, 10), sel.value);
 });
+$("origen-filter").addEventListener("change", (e) => { origenActivo = e.target.value; render(); });
+searchInput.addEventListener("input", render);
+$("view-cards").addEventListener("click", function(){ vista="cards"; this.classList.add("active"); $("view-table").classList.remove("active"); render(); });
+$("view-table").addEventListener("click", function(){ vista="table"; this.classList.add("active"); $("view-cards").classList.remove("active"); render(); });
 
-/* ============ CAMBIO DE ESTADO (dropdown inline) ============ */
+/* ============ CAMBIO DE ESTADO ============ */
 async function cambiarEstado(id, fila, nuevo) {
   try {
-    const r = await fetch(API + "/values/Clientes!E" + fila + "?valueInputOption=USER_ENTERED",
-      { method: "PUT", headers: authJSON(), body: JSON.stringify({ values: [[nuevo]] }) });
+    const r = await fetch(API + "/values/Clientes!E" + fila + "?valueInputOption=USER_ENTERED", { method: "PUT", headers: authJSON(), body: JSON.stringify({ values: [[nuevo]] }) });
     const d = await r.json(); if (d.error) throw new Error(d.error.message);
     const c = clientes.find(x => x.id === id); if (c) c.estado = nuevo;
-    render();
+    render(); renderDashboard();
     if (!screenDetail.classList.contains("hidden")) abrirFicha(id);
     toast("Estado → " + nuevo);
-  } catch (e) { toast("No se pudo actualizar el estado"); cargarClientes(); }
+  } catch (e) { toast("No se pudo actualizar el estado"); refrescar(); }
 }
 
 /* ============ WHATSAPP ============ */
@@ -426,26 +623,88 @@ function botonWA(c) {
 function abrirFicha(id) {
   const c = clientes.find(x => x.id === id);
   if (!c) return;
+  clienteActivo = id;
   const link = linkWA(c);
+  const segs = seguimientos.filter(s => s.idCliente === id).sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||""));
+
+  let segHTML = segs.length ? segs.map(s =>
+    '<div class="seg-item"><div class="seg-tipo">' + esc(s.tipo) + '</div><div class="seg-body"><div class="seg-fecha">' + esc(s.fecha) + '</div><div class="seg-desc">' + esc(s.descripcion) + '</div></div></div>'
+  ).join("") : '<div class="seg-empty">Aún no hay seguimientos registrados. Registra el primero.</div>';
+
   fichaContent.innerHTML =
-    '<div class="ficha-head"><div class="ficha-avatar">' + esc((c.nombre||"?").trim().charAt(0).toUpperCase()) + '</div>' +
-    '<div><h2>' + esc(c.nombre) + '</h2>' + selectEstado(c) + '</div></div>' +
+    '<div class="ficha-head"><div class="ficha-avatar">' + esc((c.nombre||"?").trim().charAt(0).toUpperCase()) + '</div><div><h2>' + esc(c.nombre) + '</h2>' + selectEstado(c) + '</div></div>' +
     '<div class="ficha-actions">' +
       (link ? '<a class="btn-wa" href="' + link + '" target="_blank" rel="noopener">Escribir por WhatsApp</a>' : '<span class="btn-wa disabled">Sin número</span>') +
-      '<button class="btn-edit" onclick="editarCliente(\'' + esc(c.id) + '\')">✎ Editar</button>' +
+      '<button class="btn-edit" onclick="editarCliente(\'' + esc(c.id) + '\')">✎ Editar datos</button>' +
     '</div>' +
+    '<div class="pa-box"><div class="k">Próxima acción</div><div class="pa-row">' +
+      '<input id="pa-accion" type="text" placeholder="Ej. Enviar propuesta de pensión" value="' + esc(c.proximaAccion) + '" />' +
+      '<input id="pa-fecha" type="date" value="' + esc(c.proximaFecha) + '" />' +
+      '<button id="pa-save" class="btn-gold">Guardar</button>' +
+    '</div></div>' +
     '<div class="datagrid">' + celda("Teléfono", c.telefono) + celda("Email", c.email) + celda("Origen", c.origen) +
       celda("Etiquetas", c.etiquetas) + celda("Fecha de creación", c.fechaCreacion) + celda("Último seguimiento", c.ultimoSeguimiento) + '</div>' +
     (c.notas ? '<div class="notas-block"><div class="k">Notas generales</div><div class="v">' + esc(c.notas) + '</div></div>' : '') +
-    '<div class="coming">📋 El <strong>historial de seguimientos</strong> y los <strong>documentos PDF</strong> de este cliente llegan en la <strong>Fase 3</strong>.</div>';
-  screenList.classList.add("hidden"); screenDetail.classList.remove("hidden"); window.scrollTo(0, 0);
+    '<div class="seg-head"><span class="k">Historial de seguimientos (' + segs.length + ')</span><button class="btn-seg" id="btn-seg-new">+ Registrar seguimiento</button></div>' +
+    segHTML;
+
+  $("pa-save").addEventListener("click", () => guardarProximaAccion(c.id, c.fila));
+  $("btn-seg-new").addEventListener("click", () => abrirSegModal(c.id));
+  mostrar("screen-detail"); window.scrollTo(0, 0);
 }
 function celda(k, v) { return '<div class="datacell"><div class="k">' + k + '</div><div class="v">' + (esc(v) || '—') + '</div></div>'; }
-$("btn-back").addEventListener("click", () => { screenDetail.classList.add("hidden"); screenList.classList.remove("hidden"); });
-/* Cambiar estado desde la ficha */
 fichaContent.addEventListener("change", (e) => {
   const sel = e.target.closest(".estado-select");
   if (sel) cambiarEstado(sel.dataset.id, parseInt(sel.dataset.fila, 10), sel.value);
+});
+
+async function guardarProximaAccion(id, fila) {
+  const accion = $("pa-accion").value.trim();
+  const fecha = $("pa-fecha").value;
+  const btn = $("pa-save"); btn.disabled = true; btn.textContent = "Guardando…";
+  try {
+    await fetch(API + "/values/Clientes!K" + fila + ":L" + fila + "?valueInputOption=USER_ENTERED",
+      { method: "PUT", headers: authJSON(), body: JSON.stringify({ values: [[accion, fecha]] }) });
+    const c = clientes.find(x => x.id === id); if (c) { c.proximaAccion = accion; c.proximaFecha = fecha; }
+    renderDashboard();
+    toast("Próxima acción guardada");
+  } catch (e) { toast("No se pudo guardar la acción"); }
+  finally { btn.disabled = false; btn.textContent = "Guardar"; }
+}
+
+/* ============ MODAL SEGUIMIENTO ============ */
+function abrirSegModal(id) {
+  clienteActivo = id;
+  $("seg-tipo").value = "Llamada"; $("seg-fecha").value = hoyISO(); $("seg-desc").value = ""; $("seg-error").textContent = "";
+  segModal.classList.remove("hidden"); $("seg-desc").focus();
+}
+$("seg-cancel").addEventListener("click", () => segModal.classList.add("hidden"));
+segModal.addEventListener("click", (e) => { if (e.target === segModal) segModal.classList.add("hidden"); });
+$("seg-save").addEventListener("click", async () => {
+  const desc = $("seg-desc").value.trim();
+  if (!desc) { $("seg-error").textContent = "Escribe una descripción."; return; }
+  const tipo = $("seg-tipo").value, fecha = $("seg-fecha").value || hoyISO();
+  const btn = $("seg-save"); btn.disabled = true; btn.textContent = "Guardando…"; $("seg-error").textContent = "";
+  try {
+    const segId = "SEG-" + Date.now().toString(36).toUpperCase();
+    await fetch(API + "/values/Seguimientos!A:E:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS",
+      { method: "POST", headers: authJSON(), body: JSON.stringify({ values: [[segId, clienteActivo, fecha, tipo, desc]] }) });
+    // Actualizar "último seguimiento" del cliente si esta fecha es más reciente
+    const c = clientes.find(x => x.id === clienteActivo);
+    if (c) {
+      const nuevoUltimo = (!c.ultimoSeguimiento || fecha > c.ultimoSeguimiento) ? fecha : c.ultimoSeguimiento;
+      if (nuevoUltimo !== c.ultimoSeguimiento) {
+        await fetch(API + "/values/Clientes!I" + c.fila + "?valueInputOption=USER_ENTERED", { method: "PUT", headers: authJSON(), body: JSON.stringify({ values: [[nuevoUltimo]] }) });
+        c.ultimoSeguimiento = nuevoUltimo;
+      }
+    }
+    segModal.classList.add("hidden");
+    await cargarSeguimientos();
+    renderDashboard(); render();
+    abrirFicha(clienteActivo);
+    toast("Seguimiento registrado");
+  } catch (e) { $("seg-error").textContent = "No se pudo guardar: " + e.message; }
+  finally { btn.disabled = false; btn.textContent = "Guardar seguimiento"; }
 });
 
 /* ============ MODAL CREAR / EDITAR ============ */
@@ -460,39 +719,33 @@ function abrirModal(cliente) {
   $("f-origen").value = editando ? editando.origen : "";
   $("f-etiquetas").value = editando ? editando.etiquetas : "";
   $("f-notas").value = editando ? editando.notas : "";
-  modal.classList.remove("hidden");
-  $("f-nombre").focus();
+  modal.classList.remove("hidden"); $("f-nombre").focus();
 }
 function editarCliente(id) { const c = clientes.find(x => x.id === id); if (c) abrirModal(c); }
 $("btn-new").addEventListener("click", () => abrirModal(null));
 $("modal-cancel").addEventListener("click", () => modal.classList.add("hidden"));
 modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.add("hidden"); });
-
 $("modal-save").addEventListener("click", async () => {
   const nombre = $("f-nombre").value.trim();
   if (!nombre) { $("modal-error").textContent = "El nombre es obligatorio."; return; }
   const btn = $("modal-save"); btn.disabled = true; btn.textContent = "Guardando…"; $("modal-error").textContent = "";
-  const d = { nombre, telefono: $("f-telefono").value.trim(), email: $("f-email").value.trim(), estado: $("f-estado").value,
-              origen: $("f-origen").value.trim(), etiquetas: $("f-etiquetas").value.trim(), notas: $("f-notas").value.trim() };
+  const d = { nombre, telefono: $("f-telefono").value.trim(), email: $("f-email").value.trim(), estado: $("f-estado").value, origen: $("f-origen").value.trim(), etiquetas: $("f-etiquetas").value.trim(), notas: $("f-notas").value.trim() };
   try {
     if (editando) {
-      const row = [editando.id, d.nombre, d.telefono, d.email, d.estado, d.origen, d.etiquetas,
-                   editando.fechaCreacion || hoyISO(), editando.ultimoSeguimiento || "", d.notas];
-      const r = await fetch(API + "/values/Clientes!A" + editando.fila + ":J" + editando.fila + "?valueInputOption=USER_ENTERED",
-                { method: "PUT", headers: authJSON(), body: JSON.stringify({ values: [row] }) });
+      const row = [editando.id, d.nombre, d.telefono, d.email, d.estado, d.origen, d.etiquetas, editando.fechaCreacion || hoyISO(), editando.ultimoSeguimiento || "", d.notas];
+      const r = await fetch(API + "/values/Clientes!A" + editando.fila + ":J" + editando.fila + "?valueInputOption=USER_ENTERED", { method: "PUT", headers: authJSON(), body: JSON.stringify({ values: [row] }) });
       const j = await r.json(); if (j.error) throw new Error(j.error.message);
     } else {
       const id = "CLI-" + Date.now().toString(36).toUpperCase();
       const row = [id, d.nombre, d.telefono, d.email, d.estado, d.origen, d.etiquetas, hoyISO(), "", d.notas];
-      const r = await fetch(API + "/values/Clientes!A:J:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS",
-                { method: "POST", headers: authJSON(), body: JSON.stringify({ values: [row] }) });
+      const r = await fetch(API + "/values/Clientes!A:J:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS", { method: "POST", headers: authJSON(), body: JSON.stringify({ values: [row] }) });
       const j = await r.json(); if (j.error) throw new Error(j.error.message);
     }
     modal.classList.add("hidden");
-    const idEditado = editando ? editando.id : null;
-    await cargarClientes();
-    if (idEditado) abrirFicha(idEditado);
-    toast(idEditado ? "Cliente actualizado" : "Cliente creado");
+    const idEd = editando ? editando.id : null;
+    await cargarClientes(); renderOrigenFilter(); renderDashboard(); render();
+    if (idEd) abrirFicha(idEd);
+    toast(idEd ? "Cliente actualizado" : "Cliente creado");
   } catch (e) { $("modal-error").textContent = "No se pudo guardar: " + e.message; }
   finally { btn.disabled = false; btn.textContent = "Guardar cliente"; }
 });
@@ -500,13 +753,11 @@ $("modal-save").addEventListener("click", async () => {
 /* ============ IMPORTAR CSV ============ */
 $("btn-import").addEventListener("click", () => {
   csvContactos = []; $("csv-file").value = ""; $("import-error").textContent = "";
-  $("csv-preview").classList.add("hidden"); $("csv-preview").innerHTML = "";
-  $("import-run").disabled = true;
+  $("csv-preview").classList.add("hidden"); $("csv-preview").innerHTML = ""; $("import-run").disabled = true;
   importModal.classList.remove("hidden");
 });
 $("import-cancel").addEventListener("click", () => importModal.classList.add("hidden"));
 importModal.addEventListener("click", (e) => { if (e.target === importModal) importModal.classList.add("hidden"); });
-
 $("csv-file").addEventListener("change", (e) => {
   const file = e.target.files[0]; if (!file) return;
   const reader = new FileReader();
@@ -514,87 +765,63 @@ $("csv-file").addEventListener("change", (e) => {
   reader.onerror = () => { $("import-error").textContent = "No se pudo leer el archivo."; };
   reader.readAsText(file, "UTF-8");
 });
-
-/* Parser CSV: detecta delimitador (, o ;) y respeta comillas */
 function parseCSV(text) {
-  const primeraLinea = text.split(/\r?\n/)[0] || "";
-  const delim = (primeraLinea.split(";").length > primeraLinea.split(",").length) ? ";" : ",";
-  const filas = []; let fila = [], campo = "", enComillas = false;
+  const primera = text.split(/\r?\n/)[0] || "";
+  const delim = (primera.split(";").length > primera.split(",").length) ? ";" : ",";
+  const filas = []; let fila = [], campo = "", comillas = false;
   for (let i = 0; i < text.length; i++) {
     const ch = text[i];
-    if (enComillas) {
-      if (ch === '"') { if (text[i + 1] === '"') { campo += '"'; i++; } else enComillas = false; }
-      else campo += ch;
-    } else {
-      if (ch === '"') enComillas = true;
-      else if (ch === delim) { fila.push(campo); campo = ""; }
-      else if (ch === "\n") { fila.push(campo); filas.push(fila); fila = []; campo = ""; }
-      else if (ch === "\r") { /* ignore */ }
-      else campo += ch;
-    }
+    if (comillas) { if (ch === '"') { if (text[i+1] === '"') { campo += '"'; i++; } else comillas = false; } else campo += ch; }
+    else { if (ch === '"') comillas = true; else if (ch === delim) { fila.push(campo); campo = ""; } else if (ch === "\n") { fila.push(campo); filas.push(fila); fila = []; campo = ""; } else if (ch === "\r") {} else campo += ch; }
   }
   if (campo.length || fila.length) { fila.push(campo); filas.push(fila); }
   return filas.filter(f => f.some(x => x.trim() !== ""));
 }
-
 function procesarCSV(text) {
   $("import-error").textContent = "";
   const filas = parseCSV(text);
   if (filas.length === 0) { $("import-error").textContent = "El archivo está vacío."; return; }
-
-  // ¿La primera fila es encabezado?
-  let iNombre = 0, iCorreo = 1, iTel = 2, inicio = 0;
+  let iN = 0, iC = 1, iT = 2, inicio = 0;
   const cab = filas[0].map(x => x.toLowerCase().trim());
-  const esCabecera = cab.some(h => /nombre|name|correo|email|mail|tel|phone|celular|whatsapp|m[oó]vil/.test(h));
-  if (esCabecera) {
+  if (cab.some(h => /nombre|name|correo|email|mail|tel|phone|celular|whatsapp|m[oó]vil/.test(h))) {
     inicio = 1;
-    const buscar = (keys) => cab.findIndex(h => keys.some(k => h.includes(k)));
-    const n = buscar(["nombre", "name"]); const co = buscar(["correo", "email", "mail"]); const t = buscar(["tel", "phone", "celular", "whatsapp", "movil", "móvil"]);
-    if (n >= 0) iNombre = n; if (co >= 0) iCorreo = co; if (t >= 0) iTel = t;
+    const b = (keys) => cab.findIndex(h => keys.some(k => h.includes(k)));
+    const n = b(["nombre","name"]), co = b(["correo","email","mail"]), t = b(["tel","phone","celular","whatsapp","movil","móvil"]);
+    if (n >= 0) iN = n; if (co >= 0) iC = co; if (t >= 0) iT = t;
   }
-
   csvContactos = [];
   for (let i = inicio; i < filas.length; i++) {
-    const f = filas[i];
-    const nombre = (f[iNombre] || "").trim();
+    const f = filas[i]; const nombre = (f[iN] || "").trim();
     if (!nombre) continue;
-    csvContactos.push({ nombre, correo: (f[iCorreo] || "").trim(), telefono: (f[iTel] || "").trim() });
+    csvContactos.push({ nombre, correo: (f[iC] || "").trim(), telefono: (f[iT] || "").trim() });
   }
-
   if (csvContactos.length === 0) { $("import-error").textContent = "No se encontraron contactos con nombre."; $("csv-preview").classList.add("hidden"); $("import-run").disabled = true; return; }
-
   const muestra = csvContactos.slice(0, 3).map(c => "<li>" + esc(c.nombre) + (c.telefono ? " · " + esc(c.telefono) : "") + "</li>").join("");
-  $("csv-preview").innerHTML = '<span class="big">' + csvContactos.length + ' contacto' + (csvContactos.length === 1 ? "" : "s") + '</span> listos para importar.' +
-    '<ul>' + muestra + (csvContactos.length > 3 ? "<li>…y " + (csvContactos.length - 3) + " más</li>" : "") + '</ul>';
-  $("csv-preview").classList.remove("hidden");
-  $("import-run").disabled = false;
+  $("csv-preview").innerHTML = '<span class="big">' + csvContactos.length + ' contacto' + (csvContactos.length === 1 ? "" : "s") + '</span> listos para importar.<ul>' + muestra + (csvContactos.length > 3 ? "<li>…y " + (csvContactos.length - 3) + " más</li>" : "") + '</ul>';
+  $("csv-preview").classList.remove("hidden"); $("import-run").disabled = false;
 }
-
 $("import-run").addEventListener("click", async () => {
   if (csvContactos.length === 0) return;
   const btn = $("import-run"); btn.disabled = true; btn.textContent = "Importando…"; $("import-error").textContent = "";
   const base = Date.now().toString(36).toUpperCase();
-  const rows = csvContactos.map((c, i) =>
-    ["CLI-" + base + "-" + i, c.nombre, c.telefono, c.correo, "Lead no calificado", "Importado CSV", "", hoyISO(), "", ""]);
+  const rows = csvContactos.map((c, i) => ["CLI-" + base + "-" + i, c.nombre, c.telefono, c.correo, "Lead no calificado", "Importado CSV", "", hoyISO(), "", ""]);
   try {
-    const r = await fetch(API + "/values/Clientes!A:J:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS",
-      { method: "POST", headers: authJSON(), body: JSON.stringify({ values: rows }) });
+    const r = await fetch(API + "/values/Clientes!A:J:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS", { method: "POST", headers: authJSON(), body: JSON.stringify({ values: rows }) });
     const j = await r.json(); if (j.error) throw new Error(j.error.message);
     importModal.classList.add("hidden");
-    await cargarClientes();
+    await cargarClientes(); renderOrigenFilter(); renderDashboard(); render();
     toast(rows.length + " contactos importados");
   } catch (e) { $("import-error").textContent = "No se pudo importar: " + e.message; }
   finally { btn.disabled = false; btn.textContent = "Importar contactos"; }
 });
 
-/* ============ EVENTOS LISTA ============ */
-searchInput.addEventListener("input", render);
-$("view-cards").addEventListener("click", function(){ vista="cards"; this.classList.add("active"); $("view-table").classList.remove("active"); render(); });
-$("view-table").addEventListener("click", function(){ vista="table"; this.classList.add("active"); $("view-cards").classList.remove("active"); render(); });
-
 /* ============ UTIL ============ */
 function toast(msg) { let t = $("_toast"); if (!t) { t = document.createElement("div"); t.id = "_toast"; t.className = "toast"; document.body.appendChild(t); } t.textContent = msg; t.classList.remove("hidden"); clearTimeout(t._t); t._t = setTimeout(() => t.classList.add("hidden"), 2600); }
 function hoyISO(){ const d=new Date(), z=n=>String(n).padStart(2,"0"); return d.getFullYear()+"-"+z(d.getMonth()+1)+"-"+z(d.getDate()); }
+function pd(iso){ const p=(iso||"").split("-").map(Number); return new Date(p[0],(p[1]||1)-1,p[2]||1); }
+function diffDias(desdeISO, hastaISO){ return Math.round((pd(hastaISO) - pd(desdeISO)) / 86400000); }
+function restarDias(iso, n){ const d=pd(iso); d.setDate(d.getDate()-n); const z=x=>String(x).padStart(2,"0"); return d.getFullYear()+"-"+z(d.getMonth()+1)+"-"+z(d.getDate()); }
+function fechaLarga(){ const meses=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"]; const dias=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"]; const d=new Date(); return dias[d.getDay()]+", "+d.getDate()+" de "+meses[d.getMonth()]+" de "+d.getFullYear(); }
 function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
 </script>
 </body>
