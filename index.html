@@ -204,6 +204,30 @@
 
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--navy-800); border: 1px solid var(--gold); color: var(--cream); padding: 12px 22px; border-radius: 12px; z-index: 100; font-size: 14px; font-weight: 500; box-shadow: 0 12px 34px rgba(0,0,0,.45); }
 
+  /* PRODUCTOS */
+  .prod-block { background: var(--navy-800); border: 1px solid var(--navy-700); border-radius: 14px; padding: 18px; margin-bottom: 18px; }
+  .prod-block h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--slate); margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .cat-item { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px solid rgba(23,52,92,0.6); }
+  .cat-item:last-child { border-bottom: none; }
+  .cat-item .ci-main { flex: 1; min-width: 0; }
+  .cat-item .ci-name { font-weight: 600; font-size: 14.5px; }
+  .cat-item .ci-cat { color: var(--slate); font-size: 12.5px; margin-top: 2px; }
+  .cat-item.inactivo { opacity: .5; }
+  .pill-cat { display: inline-block; font-size: 11px; font-weight: 600; color: var(--gold-lt); background: rgba(201,162,39,0.12); border: 1px solid color-mix(in srgb, var(--gold) 30%, transparent); border-radius: 999px; padding: 2px 9px; }
+  .pill-off { display: inline-block; font-size: 11px; font-weight: 600; color: var(--slate); background: rgba(147,160,181,0.12); border: 1px solid color-mix(in srgb, var(--slate) 30%, transparent); border-radius: 999px; padding: 2px 9px; }
+  .mini-btn { background: transparent; border: 1px solid var(--navy-700); color: var(--slate); border-radius: 8px; padding: 6px 10px; font-size: 12.5px; font-weight: 600; cursor: pointer; transition: all .15s; }
+  .mini-btn:hover { color: var(--gold); border-color: var(--slate); }
+  .cross-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+  .cross-row .lbl { color: var(--slate); font-size: 13.5px; }
+  /* Productos en la ficha */
+  .prod-cli { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(23,52,92,0.6); }
+  .prod-cli:last-child { border-bottom: none; }
+  .prod-cli .pc-main { flex: 1; min-width: 0; }
+  .prod-cli .pc-name { font-weight: 600; font-size: 14.5px; }
+  .prod-cli .pc-sub { color: var(--slate); font-size: 12.5px; margin-top: 2px; }
+  .cross-hint { background: linear-gradient(180deg, rgba(201,162,39,0.08), transparent); border: 1px solid color-mix(in srgb, var(--gold) 28%, transparent); border-radius: 12px; padding: 13px 15px; margin-top: 12px; font-size: 13px; line-height: 1.5; color: var(--cream); }
+  .cross-hint b { color: var(--gold-lt); }
+
   @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
   .hidden { display: none !important; }
 </style>
@@ -239,6 +263,7 @@
   <div class="nav">
     <button id="nav-hoy" class="nav-btn active">Hoy</button>
     <button id="nav-clientes" class="nav-btn">Clientes</button>
+    <button id="nav-productos" class="nav-btn">Productos</button>
   </div>
 
   <!-- DASHBOARD -->
@@ -266,6 +291,13 @@
   <div id="screen-detail" class="hidden">
     <button id="btn-back" class="btn-back">← Volver</button>
     <div id="ficha-content"></div>
+  </div>
+
+  <!-- PRODUCTOS -->
+  <div id="screen-productos" class="hidden">
+    <div class="dash-hd">Productos</div>
+    <div class="dash-sub">Administra tu catálogo y detecta oportunidades de venta cruzada.</div>
+    <div id="prod-content"><div class="loading">Cargando…</div></div>
   </div>
 </div>
 
@@ -324,6 +356,42 @@
   </div>
 </div>
 
+<!-- MODAL producto del catálogo -->
+<div id="cat-overlay" class="modal-overlay hidden">
+  <div class="modal">
+    <h3 id="cat-title">Nuevo producto</h3>
+    <div class="form-grid">
+      <div class="fld full"><label>Nombre del producto *</label><input id="cat-nombre" type="text" placeholder="Ej. Fondo voluntario Skandia Multifund" /></div>
+      <div class="fld"><label>Categoría</label><input id="cat-categoria" type="text" placeholder="Pensional, Inmobiliario, Bolsa…" list="cat-cats" /><datalist id="cat-cats"></datalist></div>
+      <div class="fld"><label>Estado</label><select id="cat-activo"><option value="Sí">Activo</option><option value="No">Inactivo</option></select></div>
+    </div>
+    <div id="cat-error" class="modal-error"></div>
+    <div class="modal-actions">
+      <button id="cat-cancel" class="btn-ghost">Cancelar</button>
+      <button id="cat-save" class="btn-gold">Guardar producto</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL asignar producto a cliente -->
+<div id="asig-overlay" class="modal-overlay hidden">
+  <div class="modal">
+    <h3>Asignar producto</h3>
+    <p class="modal-help" id="asig-cliente"></p>
+    <div class="form-grid">
+      <div class="fld full"><label>Producto (de tu catálogo) *</label><select id="asig-producto"></select></div>
+      <div class="fld"><label>Valor / prima</label><input id="asig-valor" type="text" inputmode="numeric" placeholder="Ej. 5000000" /></div>
+      <div class="fld"><label>Fecha de adquisición</label><input id="asig-fecha" type="date" /></div>
+      <div class="fld full"><label>Notas del producto</label><textarea id="asig-notas" placeholder="Detalles, número de póliza, etc."></textarea></div>
+    </div>
+    <div id="asig-error" class="modal-error"></div>
+    <div class="modal-actions">
+      <button id="asig-cancel" class="btn-ghost">Cancelar</button>
+      <button id="asig-save" class="btn-gold">Asignar producto</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ================================================================
    CONFIGURACIÓN — ya viene lista con tus valores. No tocar.
@@ -341,9 +409,10 @@ const ESTADOS = ["Lead no calificado", "Prospecto", "Cliente", "Perdido"];
 const API = "https://sheets.googleapis.com/v4/spreadsheets/" + CONFIG.SHEET_ID;
 
 let accessToken = null, tokenClient = null;
-let clientes = [], seguimientos = [];
+let clientes = [], seguimientos = [], catalogo = [], ventas = [];
 let estadoActivo = "Todos", origenActivo = "Todos", vista = "cards";
 let editando = null, csvContactos = [], clienteActivo = null, pantallaAnterior = "screen-dashboard";
+let editandoCat = null;  // producto del catálogo en edición
 
 const $ = (id) => document.getElementById(id);
 const viewLogin = $("view-login"), viewApp = $("view-app");
@@ -380,7 +449,7 @@ async function onToken(resp) {
 }
 $("btn-logout").addEventListener("click", () => {
   if (accessToken) google.accounts.oauth2.revoke(accessToken, () => {});
-  accessToken = null; clientes = []; seguimientos = [];
+  accessToken = null; clientes = []; seguimientos = []; catalogo = []; ventas = [];
   viewApp.classList.add("hidden"); viewLogin.classList.remove("hidden");
 });
 function auth() { return { Authorization: "Bearer " + accessToken }; }
@@ -400,6 +469,18 @@ async function asegurarEsquema() {
       await fetch(API + "/values/Seguimientos!A1:E1?valueInputOption=RAW", { method: "PUT", headers: authJSON(),
         body: JSON.stringify({ values: [["ID_Seguimiento", "ID_Cliente", "Fecha", "Tipo", "Descripcion"]] }) });
     }
+    if (!titulos.includes("Catalogo")) {
+      await fetch(API + ":batchUpdate", { method: "POST", headers: authJSON(),
+        body: JSON.stringify({ requests: [{ addSheet: { properties: { title: "Catalogo" } } }] }) });
+      await fetch(API + "/values/Catalogo!A1:D1?valueInputOption=RAW", { method: "PUT", headers: authJSON(),
+        body: JSON.stringify({ values: [["ID_Producto", "Nombre", "Categoria", "Activo"]] }) });
+    }
+    if (!titulos.includes("Productos")) {
+      await fetch(API + ":batchUpdate", { method: "POST", headers: authJSON(),
+        body: JSON.stringify({ requests: [{ addSheet: { properties: { title: "Productos" } } }] }) });
+      await fetch(API + "/values/Productos!A1:F1?valueInputOption=RAW", { method: "PUT", headers: authJSON(),
+        body: JSON.stringify({ values: [["ID_Venta", "ID_Cliente", "ID_Producto", "Valor", "Fecha_Adquisicion", "Notas"]] }) });
+    }
     // Encabezados de columnas nuevas en Clientes (K, L y M)
     await fetch(API + "/values/Clientes!K1:M1?valueInputOption=RAW", { method: "PUT", headers: authJSON(),
       body: JSON.stringify({ values: [["Proxima_Accion", "Proxima_Fecha", "Fecha_Ultima_Gestion"]] }) });
@@ -410,10 +491,29 @@ async function asegurarEsquema() {
 async function refrescar() {
   listContainer.innerHTML = '<div class="loading">Cargando…</div>';
   $("dash-content").innerHTML = '<div class="loading">Cargando…</div>';
-  await Promise.all([cargarClientes(), cargarSeguimientos()]);
+  await Promise.all([cargarClientes(), cargarSeguimientos(), cargarCatalogo(), cargarVentas()]);
   renderOrigenFilter();
   renderDashboard();
   render();
+  if (!$("screen-productos").classList.contains("hidden")) renderProductos();
+}
+async function cargarCatalogo() {
+  try {
+    const r = await fetch(API + "/values/Catalogo!A2:D1000", { headers: auth() });
+    const data = await r.json();
+    if (data.error) throw new Error(data.error.message);
+    catalogo = (data.values || []).map((f, i) => ({ fila: i + 2, id: f[0] || "", nombre: f[1] || "", categoria: f[2] || "", activo: (f[3] || "Sí") !== "No" }))
+      .filter(p => p.nombre.trim() !== "");
+  } catch (e) { catalogo = []; }
+}
+async function cargarVentas() {
+  try {
+    const r = await fetch(API + "/values/Productos!A2:F3000", { headers: auth() });
+    const data = await r.json();
+    if (data.error) throw new Error(data.error.message);
+    ventas = (data.values || []).map((f, i) => ({ fila: i + 2, id: f[0] || "", idCliente: f[1] || "", idProducto: f[2] || "", valor: f[3] || "", fecha: f[4] || "", notas: f[5] || "" }))
+      .filter(v => v.idCliente && v.idProducto);
+  } catch (e) { ventas = []; }
 }
 async function cargarClientes() {
   try {
@@ -444,11 +544,13 @@ $("btn-refresh").addEventListener("click", refrescar);
 
 /* ============ NAVEGACIÓN ============ */
 function mostrar(screen) {
-  [screenDash, screenList, screenDetail].forEach(s => s.classList.add("hidden"));
+  [screenDash, screenList, screenDetail, $("screen-productos")].forEach(s => s.classList.add("hidden"));
   $(screen).classList.remove("hidden");
 }
-$("nav-hoy").addEventListener("click", () => { $("nav-hoy").classList.add("active"); $("nav-clientes").classList.remove("active"); mostrar("screen-dashboard"); });
-$("nav-clientes").addEventListener("click", () => { $("nav-clientes").classList.add("active"); $("nav-hoy").classList.remove("active"); mostrar("screen-list"); });
+function activarNav(btn) { ["nav-hoy","nav-clientes","nav-productos"].forEach(id => $(id).classList.toggle("active", id === btn)); }
+$("nav-hoy").addEventListener("click", () => { activarNav("nav-hoy"); mostrar("screen-dashboard"); });
+$("nav-clientes").addEventListener("click", () => { activarNav("nav-clientes"); mostrar("screen-list"); });
+$("nav-productos").addEventListener("click", () => { activarNav("nav-productos"); mostrar("screen-productos"); renderProductos(); });
 $("btn-back").addEventListener("click", () => mostrar(pantallaAnterior));
 
 /* ============ DASHBOARD ============ */
@@ -647,6 +749,19 @@ function abrirFicha(id) {
     '<div class="seg-item"><div class="seg-tipo">' + esc(s.tipo) + '</div><div class="seg-body"><div class="seg-fecha">' + esc(s.fecha) + '</div><div class="seg-desc">' + esc(s.descripcion) + '</div></div></div>'
   ).join("") : '<div class="seg-empty">Aún no hay seguimientos registrados. Registra el primero.</div>';
 
+  // Productos del cliente + oportunidades de cross-selling
+  const misVentas = ventasDeCliente(id);
+  const prodItems = misVentas.length ? misVentas.map(v =>
+    '<div class="prod-cli"><div class="pc-main"><div class="pc-name">' + esc(nombreProducto(v.idProducto)) + '</div>' +
+    '<div class="pc-sub">' + (fmtValor(v.valor) ? esc(fmtValor(v.valor)) + ' · ' : '') + (v.fecha ? 'desde ' + esc(v.fecha) : '') + (v.notas ? ' · ' + esc(v.notas) : '') + '</div></div>' +
+    '<button class="mini-btn" data-quitar="' + esc(v.id) + '">Quitar</button></div>'
+  ).join("") : '<div class="seg-empty">Sin productos asignados aún.</div>';
+  const idsTiene = new Set(misVentas.map(v => v.idProducto));
+  const faltan = catalogo.filter(p => p.activo && !idsTiene.has(p.id));
+  const crossHint = (misVentas.length && faltan.length)
+    ? '<div class="cross-hint">💡 Oportunidad: aún no tiene <b>' + faltan.map(p => esc(p.nombre)).join('</b>, <b>') + '</b>.</div>' : '';
+  const productosHTML = '<div class="seg-head"><span class="k">Productos contigo (' + misVentas.length + ')</span><button class="btn-seg" id="btn-asig-new">+ Asignar producto</button></div>' + prodItems + crossHint;
+
   fichaContent.innerHTML =
     '<div class="ficha-head"><div class="ficha-avatar">' + esc((c.nombre||"?").trim().charAt(0).toUpperCase()) + '</div><div><h2>' + esc(c.nombre) + '</h2>' + selectEstado(c) + '</div></div>' +
     '<div class="ficha-actions">' +
@@ -661,11 +776,14 @@ function abrirFicha(id) {
     '<div class="datagrid">' + celda("Teléfono", c.telefono) + celda("Email", c.email) + celda("Origen", c.origen) +
       celda("Etiquetas", c.etiquetas) + celda("Fecha de creación", c.fechaCreacion) + celda("Último seguimiento", c.ultimoSeguimiento) + celda("Última gestión", gestionEfectiva(c)) + '</div>' +
     (c.notas ? '<div class="notas-block"><div class="k">Notas generales</div><div class="v">' + esc(c.notas) + '</div></div>' : '') +
+    productosHTML +
     '<div class="seg-head"><span class="k">Historial de seguimientos (' + segs.length + ')</span><button class="btn-seg" id="btn-seg-new">+ Registrar seguimiento</button></div>' +
     segHTML;
 
   $("pa-save").addEventListener("click", () => guardarProximaAccion(c.id, c.fila));
   $("btn-seg-new").addEventListener("click", () => abrirSegModal(c.id));
+  $("btn-asig-new").addEventListener("click", () => abrirAsigModal(c.id));
+  fichaContent.querySelectorAll("[data-quitar]").forEach(b => b.addEventListener("click", () => quitarProducto(b.dataset.quitar)));
   mostrar("screen-detail"); window.scrollTo(0, 0);
 }
 function celda(k, v) { return '<div class="datacell"><div class="k">' + k + '</div><div class="v">' + (esc(v) || '—') + '</div></div>'; }
@@ -827,6 +945,169 @@ $("import-run").addEventListener("click", async () => {
   } catch (e) { $("import-error").textContent = "No se pudo importar: " + e.message; }
   finally { btn.disabled = false; btn.textContent = "Importar contactos"; }
 });
+
+/* ============ PRODUCTOS: HELPERS ============ */
+function nombreProducto(idProd) { const p = catalogo.find(x => x.id === idProd); return p ? p.nombre : "(producto eliminado)"; }
+function ventasDeCliente(idCli) { return ventas.filter(v => v.idCliente === idCli); }
+function clientesConProducto(idProd) {
+  const ids = new Set(ventas.filter(v => v.idProducto === idProd).map(v => v.idCliente));
+  return clientes.filter(c => ids.has(c.id));
+}
+function fmtValor(v) { const n = String(v).replace(/\D/g, ""); return n ? "$" + Number(n).toLocaleString("es-CO") : ""; }
+
+/* ============ PANTALLA PRODUCTOS ============ */
+function renderProductos() {
+  const cont = $("prod-content");
+  // --- Catálogo ---
+  let cat = '<div class="prod-block"><h3>Mi catálogo <button id="btn-cat-new" class="btn-new" style="padding:7px 14px;">+ Nuevo producto</button></h3>';
+  if (catalogo.length === 0) {
+    cat += '<div class="dash-empty">Aún no tienes productos. Crea el primero para poder asignarlo a tus clientes.</div>';
+  } else {
+    cat += catalogo.map(p => {
+      const nVentas = ventas.filter(v => v.idProducto === p.id).length;
+      return '<div class="cat-item ' + (p.activo ? "" : "inactivo") + '"><div class="ci-main"><div class="ci-name">' + esc(p.nombre) + '</div>' +
+        '<div class="ci-cat">' + (p.categoria ? '<span class="pill-cat">' + esc(p.categoria) + '</span> ' : '') + (p.activo ? '' : '<span class="pill-off">inactivo</span> ') +
+        '· ' + nVentas + ' cliente' + (nVentas === 1 ? '' : 's') + '</div></div>' +
+        '<button class="mini-btn" data-editcat="' + esc(p.id) + '">✎ Editar</button></div>';
+    }).join("");
+  }
+  cat += '</div>';
+
+  // --- Ver clientes por producto ---
+  const activos = catalogo.filter(p => p.activo);
+  let opts = activos.map(p => '<option value="' + esc(p.id) + '">' + esc(p.nombre) + '</option>').join("");
+  let ver = '<div class="prod-block"><h3>Clientes por producto</h3>';
+  if (activos.length === 0) ver += '<div class="dash-empty">Crea productos en tu catálogo para poder filtrar.</div>';
+  else ver += '<div class="cross-row"><span class="lbl">Ver quién tiene:</span><select id="ver-prod" class="filtro-sel">' + opts + '</select></div><div id="ver-result"></div>';
+  ver += '</div>';
+
+  // --- Cross-selling ---
+  let cross = '<div class="prod-block"><h3>Oportunidades de venta cruzada</h3>';
+  if (activos.length < 2) cross += '<div class="dash-empty">Necesitas al menos 2 productos en tu catálogo para cruzar oportunidades.</div>';
+  else cross += '<div class="cross-row"><span class="lbl">Tienen</span><select id="cross-x" class="filtro-sel">' + opts + '</select>' +
+    '<span class="lbl">pero NO tienen</span><select id="cross-y" class="filtro-sel">' + opts + '</select></div><div id="cross-result"></div>';
+  cross += '</div>';
+
+  cont.innerHTML = cat + ver + cross;
+
+  $("btn-cat-new") && $("btn-cat-new").addEventListener("click", () => abrirCatModal(null));
+  cont.querySelectorAll("[data-editcat]").forEach(b => b.addEventListener("click", () => {
+    const p = catalogo.find(x => x.id === b.dataset.editcat); if (p) abrirCatModal(p);
+  }));
+  if (activos.length) { const vs = $("ver-prod"); vs.addEventListener("change", renderVerProducto); renderVerProducto(); }
+  if (activos.length >= 2) {
+    $("cross-y").selectedIndex = 1;
+    $("cross-x").addEventListener("change", renderCross); $("cross-y").addEventListener("change", renderCross); renderCross();
+  }
+}
+function filaClienteMini(c, sub) {
+  return '<div class="cold" data-idprod="' + esc(c.id) + '"><div><div class="c-name">' + esc(c.nombre) + '</div>' +
+    (sub ? '<div class="c-sub">' + sub + '</div>' : '') + '</div>' + botonWA(c) + '</div>';
+}
+function renderVerProducto() {
+  const idProd = $("ver-prod").value;
+  const lista = clientesConProducto(idProd);
+  const cont = $("ver-result");
+  if (lista.length === 0) { cont.innerHTML = '<div class="dash-empty">Ningún cliente tiene este producto todavía.</div>'; return; }
+  cont.innerHTML = lista.map(c => filaClienteMini(c, esc(c.estado))).join("");
+  enlazarFilasProd(cont);
+}
+function renderCross() {
+  const x = $("cross-x").value, y = $("cross-y").value;
+  const cont = $("cross-result");
+  if (x === y) { cont.innerHTML = '<div class="dash-empty">Elige dos productos distintos.</div>'; return; }
+  const tieneX = new Set(ventas.filter(v => v.idProducto === x).map(v => v.idCliente));
+  const tieneY = new Set(ventas.filter(v => v.idProducto === y).map(v => v.idCliente));
+  const objetivo = clientes.filter(c => tieneX.has(c.id) && !tieneY.has(c.id));
+  if (objetivo.length === 0) { cont.innerHTML = '<div class="dash-empty">No hay oportunidades con este cruce ahora mismo.</div>'; return; }
+  cont.innerHTML = '<div class="cross-hint">💡 <b>' + objetivo.length + ' cliente' + (objetivo.length === 1 ? '' : 's') + '</b> con <b>' + esc(nombreProducto(x)) + '</b> a quien' + (objetivo.length === 1 ? '' : 'es') + ' podrías ofrecer <b>' + esc(nombreProducto(y)) + '</b>.</div>' +
+    objetivo.map(c => filaClienteMini(c, esc(c.estado))).join("");
+  enlazarFilasProd(cont);
+}
+function enlazarFilasProd(cont) {
+  cont.querySelectorAll("[data-idprod]").forEach(el => el.addEventListener("click", (e) => {
+    if (e.target.closest(".btn-wa")) return;
+    pantallaAnterior = "screen-productos"; abrirFicha(el.dataset.idprod);
+  }));
+}
+
+/* ============ CATÁLOGO: CREAR / EDITAR ============ */
+const catModal = $("cat-overlay");
+function abrirCatModal(prod) {
+  editandoCat = prod || null;
+  $("cat-title").textContent = editandoCat ? "Editar producto" : "Nuevo producto";
+  $("cat-error").textContent = "";
+  $("cat-nombre").value = editandoCat ? editandoCat.nombre : "";
+  $("cat-categoria").value = editandoCat ? editandoCat.categoria : "";
+  $("cat-activo").value = editandoCat ? (editandoCat.activo ? "Sí" : "No") : "Sí";
+  // sugerencias de categorías ya usadas
+  const cats = [...new Set(catalogo.map(p => p.categoria).filter(c => c.trim() !== ""))];
+  $("cat-cats").innerHTML = cats.map(c => '<option value="' + esc(c) + '">').join("");
+  catModal.classList.remove("hidden"); $("cat-nombre").focus();
+}
+$("cat-cancel").addEventListener("click", () => catModal.classList.add("hidden"));
+catModal.addEventListener("click", (e) => { if (e.target === catModal) catModal.classList.add("hidden"); });
+$("cat-save").addEventListener("click", async () => {
+  const nombre = $("cat-nombre").value.trim();
+  if (!nombre) { $("cat-error").textContent = "El nombre del producto es obligatorio."; return; }
+  const cat = $("cat-categoria").value.trim(), activo = $("cat-activo").value;
+  const btn = $("cat-save"); btn.disabled = true; btn.textContent = "Guardando…"; $("cat-error").textContent = "";
+  try {
+    if (editandoCat) {
+      const row = [editandoCat.id, nombre, cat, activo];
+      const r = await fetch(API + "/values/Catalogo!A" + editandoCat.fila + ":D" + editandoCat.fila + "?valueInputOption=USER_ENTERED", { method: "PUT", headers: authJSON(), body: JSON.stringify({ values: [row] }) });
+      const j = await r.json(); if (j.error) throw new Error(j.error.message);
+    } else {
+      const id = "PRD-" + Date.now().toString(36).toUpperCase();
+      const row = [id, nombre, cat, activo];
+      const r = await fetch(API + "/values/Catalogo!A:D:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS", { method: "POST", headers: authJSON(), body: JSON.stringify({ values: [row] }) });
+      const j = await r.json(); if (j.error) throw new Error(j.error.message);
+    }
+    catModal.classList.add("hidden");
+    await cargarCatalogo(); renderProductos();
+    toast(editandoCat ? "Producto actualizado" : "Producto creado");
+  } catch (e) { $("cat-error").textContent = "No se pudo guardar: " + e.message; }
+  finally { btn.disabled = false; btn.textContent = "Guardar producto"; }
+});
+
+/* ============ ASIGNAR PRODUCTO A CLIENTE ============ */
+const asigModal = $("asig-overlay");
+function abrirAsigModal(idCli) {
+  clienteActivo = idCli;
+  const c = clientes.find(x => x.id === idCli);
+  const activos = catalogo.filter(p => p.activo);
+  if (activos.length === 0) { toast("Primero crea productos en tu catálogo"); return; }
+  $("asig-cliente").textContent = "Para: " + (c ? c.nombre : "");
+  $("asig-producto").innerHTML = activos.map(p => '<option value="' + esc(p.id) + '">' + esc(p.nombre) + (p.categoria ? " — " + esc(p.categoria) : "") + '</option>').join("");
+  $("asig-valor").value = ""; $("asig-fecha").value = hoyISO(); $("asig-notas").value = ""; $("asig-error").textContent = "";
+  asigModal.classList.remove("hidden");
+}
+$("asig-cancel").addEventListener("click", () => asigModal.classList.add("hidden"));
+asigModal.addEventListener("click", (e) => { if (e.target === asigModal) asigModal.classList.add("hidden"); });
+$("asig-save").addEventListener("click", async () => {
+  const idProd = $("asig-producto").value;
+  if (!idProd) { $("asig-error").textContent = "Elige un producto."; return; }
+  const btn = $("asig-save"); btn.disabled = true; btn.textContent = "Asignando…"; $("asig-error").textContent = "";
+  try {
+    const id = "VTA-" + Date.now().toString(36).toUpperCase();
+    const row = [id, clienteActivo, idProd, $("asig-valor").value.trim(), $("asig-fecha").value || hoyISO(), $("asig-notas").value.trim()];
+    const r = await fetch(API + "/values/Productos!A:F:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS", { method: "POST", headers: authJSON(), body: JSON.stringify({ values: [row] }) });
+    const j = await r.json(); if (j.error) throw new Error(j.error.message);
+    asigModal.classList.add("hidden");
+    await cargarVentas();
+    abrirFicha(clienteActivo);
+    toast("Producto asignado");
+  } catch (e) { $("asig-error").textContent = "No se pudo asignar: " + e.message; }
+  finally { btn.disabled = false; btn.textContent = "Asignar producto"; }
+});
+async function quitarProducto(idVenta) {
+  const v = ventas.find(x => x.id === idVenta); if (!v) return;
+  // Borra el contenido de la fila (no elimina la fila física, la deja vacía y se ignora al cargar)
+  try {
+    await fetch(API + "/values/Productos!A" + v.fila + ":F" + v.fila + ":clear", { method: "POST", headers: authJSON(), body: "{}" });
+    await cargarVentas(); abrirFicha(v.idCliente); toast("Producto quitado");
+  } catch (e) { toast("No se pudo quitar"); }
+}
 
 /* ============ UTIL ============ */
 function toast(msg) { let t = $("_toast"); if (!t) { t = document.createElement("div"); t.id = "_toast"; t.className = "toast"; document.body.appendChild(t); } t.textContent = msg; t.classList.remove("hidden"); clearTimeout(t._t); t._t = setTimeout(() => t.classList.add("hidden"), 2600); }
