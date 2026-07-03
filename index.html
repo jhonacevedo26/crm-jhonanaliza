@@ -333,7 +333,8 @@ const CONFIG = {
   SHEET_ID:      "1OZWZafDI7kbe5HLcXeDkVQXcyKFVCnVW00gswffXknE",
   ALLOWED_EMAIL: "jhoace26@gmail.com"
 };
-const DIAS_FRIO = 30; // días sin seguimiento para marcar un cliente como "frío"
+const DIAS_TIBIO = 90;  // +3 meses sin gestión → recordatorio suave
+const DIAS_FRIO  = 180; // +6 meses sin gestión → urge un saludo
 
 const SCOPES = "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file openid email profile";
 const ESTADOS = ["Lead no calificado", "Prospecto", "Cliente", "Perdido"];
@@ -399,9 +400,9 @@ async function asegurarEsquema() {
       await fetch(API + "/values/Seguimientos!A1:E1?valueInputOption=RAW", { method: "PUT", headers: authJSON(),
         body: JSON.stringify({ values: [["ID_Seguimiento", "ID_Cliente", "Fecha", "Tipo", "Descripcion"]] }) });
     }
-    // Encabezados de columnas nuevas en Clientes (K y L)
-    await fetch(API + "/values/Clientes!K1:L1?valueInputOption=RAW", { method: "PUT", headers: authJSON(),
-      body: JSON.stringify({ values: [["Proxima_Accion", "Proxima_Fecha"]] }) });
+    // Encabezados de columnas nuevas en Clientes (K, L y M)
+    await fetch(API + "/values/Clientes!K1:M1?valueInputOption=RAW", { method: "PUT", headers: authJSON(),
+      body: JSON.stringify({ values: [["Proxima_Accion", "Proxima_Fecha", "Fecha_Ultima_Gestion"]] }) });
   } catch (e) { console.warn("No se pudo preparar el esquema:", e); }
 }
 
@@ -416,14 +417,14 @@ async function refrescar() {
 }
 async function cargarClientes() {
   try {
-    const r = await fetch(API + "/values/Clientes!A2:L1000", { headers: auth() });
+    const r = await fetch(API + "/values/Clientes!A2:M1000", { headers: auth() });
     const data = await r.json();
     if (data.error) throw new Error(data.error.message);
     clientes = (data.values || []).map((f, i) => ({
       fila: i + 2, id: f[0] || "", nombre: f[1] || "", telefono: f[2] || "", email: f[3] || "",
       estado: f[4] || "Lead no calificado", origen: f[5] || "", etiquetas: f[6] || "",
       fechaCreacion: f[7] || "", ultimoSeguimiento: f[8] || "", notas: f[9] || "",
-      proximaAccion: f[10] || "", proximaFecha: f[11] || ""
+      proximaAccion: f[10] || "", proximaFecha: f[11] || "", ultimaGestion: f[12] || ""
     })).filter(c => c.nombre.trim() !== "");
   } catch (e) {
     clientes = [];
@@ -458,9 +459,18 @@ function renderDashboard() {
   const vencidas = conAccion.filter(c => c.proximaFecha < hoy).sort((a,b)=>a.proximaFecha.localeCompare(b.proximaFecha));
   const deHoy    = conAccion.filter(c => c.proximaFecha === hoy);
   const proximas = conAccion.filter(c => c.proximaFecha > hoy).sort((a,b)=>a.proximaFecha.localeCompare(b.proximaFecha));
-  const limite = restarDias(hoy, DIAS_FRIO);
-  const frios = clientes.filter(c => (c.estado === "Prospecto" || c.estado === "Cliente") && (!c.ultimoSeguimiento || c.ultimoSeguimiento < limite))
-                        .sort((a,b)=>(a.ultimoSeguimiento||"").localeCompare(b.ultimoSeguimiento||""));
+  // Prospectos y leads sin un siguiente paso definido (debería estar en cero)
+  const sinGestion = clientes
+    .filter(c => (c.estado === "Prospecto" || c.estado === "Lead no calificado") && !c.proximaFecha)
+    .sort((a,b) => a.estado === b.estado ? 0 : (a.estado === "Prospecto" ? -1 : 1));
+
+  // Enfriamiento por última gestión (prospectos y clientes)
+  const enf = clientes
+    .filter(c => c.estado === "Prospecto" || c.estado === "Cliente")
+    .map(c => ({ c, d: gestionEfectiva(c) ? diffDias(gestionEfectiva(c), hoy) : null }))
+    .filter(x => x.d !== null);
+  const tibios = enf.filter(x => x.d > DIAS_TIBIO && x.d <= DIAS_FRIO).sort((a,b) => b.d - a.d).map(x => x.c);
+  const friosC = enf.filter(x => x.d > DIAS_FRIO).sort((a,b) => b.d - a.d).map(x => x.c);
 
   const cuenta = est => clientes.filter(c => c.estado === est).length;
   let html = '<div class="stats">' +
@@ -470,17 +480,18 @@ function renderDashboard() {
 
   html += seccionTareas("Vencidas", vencidas, "venc", "🎉 Nada vencido. Vas al día.");
   html += seccionTareas("Para hoy", deHoy, "hoy", "No tienes acciones para hoy.");
+  html += seccionLista("⚠ Sin gestión asignada", sinGestion,
+    "Todos tus prospectos y leads tienen un siguiente paso definido. 👌",
+    c => esc(c.estado) + " · sin próxima acción");
+
   html += seccionTareas("Próximas", proximas.slice(0, 15), "prox", "No hay acciones futuras programadas.");
 
-  html += '<div class="dash-section"><h3>Clientes que se están enfriando <span class="n">' + frios.length + '</span></h3>';
-  if (frios.length === 0) html += '<div class="dash-empty">Todos tus prospectos y clientes tienen seguimiento reciente. 👏</div>';
-  else html += frios.slice(0, 10).map(c => {
-    const dias = c.ultimoSeguimiento ? diffDias(c.ultimoSeguimiento, hoy) : null;
-    const txt = dias === null ? "Nunca registrado" : "Hace " + dias + " días";
-    return '<div class="cold" data-id="' + esc(c.id) + '"><div><div class="c-name">' + esc(c.nombre) + '</div>' +
-      '<div class="c-sub">' + esc(c.estado) + ' · último seguimiento: ' + txt + '</div></div>' + botonWA(c) + '</div>';
-  }).join("");
-  html += '</div>';
+  html += seccionLista("Sin gestión hace +3 meses", tibios,
+    "Nadie lleva más de 3 meses sin gestión. 👏",
+    c => esc(c.estado) + " · hace ~" + mesesSin(c) + " meses");
+  html += seccionLista("Sin gestión hace +6 meses", friosC,
+    "Ningún cliente lleva más de 6 meses sin gestión. 🔥",
+    c => esc(c.estado) + " · hace ~" + mesesSin(c) + " meses");
 
   cont.innerHTML = html;
 }
@@ -499,6 +510,15 @@ function seccionTareas(titulo, lista, cls, vacio) {
   }).join("");
   return h + '</div>';
 }
+function seccionLista(titulo, lista, vacio, subFn) {
+  let h = '<div class="dash-section"><h3>' + titulo + ' <span class="n">' + lista.length + '</span></h3>';
+  if (lista.length === 0) { h += '<div class="dash-empty">' + vacio + '</div></div>'; return h; }
+  h += lista.slice(0, 20).map(c =>
+    '<div class="cold" data-id="' + esc(c.id) + '"><div><div class="c-name">' + esc(c.nombre) + '</div>' +
+    '<div class="c-sub">' + subFn(c) + '</div></div>' + botonWA(c) + '</div>').join("");
+  return h + '</div>';
+}
+function mesesSin(c) { const ug = gestionEfectiva(c); return ug ? Math.floor(diffDias(ug, hoyISO()) / 30) : "—"; }
 $("dash-content").addEventListener("click", (e) => {
   const done = e.target.closest("[data-done]");
   if (done) { completarAccion(done.dataset.done); return; }
@@ -509,9 +529,8 @@ $("dash-content").addEventListener("click", (e) => {
 async function completarAccion(id) {
   const c = clientes.find(x => x.id === id); if (!c) return;
   try {
-    await fetch(API + "/values/Clientes!K" + c.fila + ":L" + c.fila + "?valueInputOption=USER_ENTERED",
-      { method: "PUT", headers: authJSON(), body: JSON.stringify({ values: [["", ""]] }) });
-    c.proximaAccion = ""; c.proximaFecha = "";
+    await escribirCeldas(c.fila, [["K", ""], ["L", ""], ["M", hoyISO()]]);
+    c.proximaAccion = ""; c.proximaFecha = ""; c.ultimaGestion = hoyISO();
     renderDashboard(); toast("Acción completada");
   } catch (e) { toast("No se pudo actualizar"); }
 }
@@ -595,9 +614,8 @@ $("view-table").addEventListener("click", function(){ vista="table"; this.classL
 /* ============ CAMBIO DE ESTADO ============ */
 async function cambiarEstado(id, fila, nuevo) {
   try {
-    const r = await fetch(API + "/values/Clientes!E" + fila + "?valueInputOption=USER_ENTERED", { method: "PUT", headers: authJSON(), body: JSON.stringify({ values: [[nuevo]] }) });
-    const d = await r.json(); if (d.error) throw new Error(d.error.message);
-    const c = clientes.find(x => x.id === id); if (c) c.estado = nuevo;
+    await escribirCeldas(fila, [["E", nuevo], ["M", hoyISO()]]);
+    const c = clientes.find(x => x.id === id); if (c) { c.estado = nuevo; c.ultimaGestion = hoyISO(); }
     render(); renderDashboard();
     if (!screenDetail.classList.contains("hidden")) abrirFicha(id);
     toast("Estado → " + nuevo);
@@ -641,7 +659,7 @@ function abrirFicha(id) {
       '<button id="pa-save" class="btn-gold">Guardar</button>' +
     '</div></div>' +
     '<div class="datagrid">' + celda("Teléfono", c.telefono) + celda("Email", c.email) + celda("Origen", c.origen) +
-      celda("Etiquetas", c.etiquetas) + celda("Fecha de creación", c.fechaCreacion) + celda("Último seguimiento", c.ultimoSeguimiento) + '</div>' +
+      celda("Etiquetas", c.etiquetas) + celda("Fecha de creación", c.fechaCreacion) + celda("Último seguimiento", c.ultimoSeguimiento) + celda("Última gestión", gestionEfectiva(c)) + '</div>' +
     (c.notas ? '<div class="notas-block"><div class="k">Notas generales</div><div class="v">' + esc(c.notas) + '</div></div>' : '') +
     '<div class="seg-head"><span class="k">Historial de seguimientos (' + segs.length + ')</span><button class="btn-seg" id="btn-seg-new">+ Registrar seguimiento</button></div>' +
     segHTML;
@@ -661,9 +679,8 @@ async function guardarProximaAccion(id, fila) {
   const fecha = $("pa-fecha").value;
   const btn = $("pa-save"); btn.disabled = true; btn.textContent = "Guardando…";
   try {
-    await fetch(API + "/values/Clientes!K" + fila + ":L" + fila + "?valueInputOption=USER_ENTERED",
-      { method: "PUT", headers: authJSON(), body: JSON.stringify({ values: [[accion, fecha]] }) });
-    const c = clientes.find(x => x.id === id); if (c) { c.proximaAccion = accion; c.proximaFecha = fecha; }
+    await escribirCeldas(fila, [["K", accion], ["L", fecha], ["M", hoyISO()]]);
+    const c = clientes.find(x => x.id === id); if (c) { c.proximaAccion = accion; c.proximaFecha = fecha; c.ultimaGestion = hoyISO(); }
     renderDashboard();
     toast("Próxima acción guardada");
   } catch (e) { toast("No se pudo guardar la acción"); }
@@ -687,14 +704,12 @@ $("seg-save").addEventListener("click", async () => {
     const segId = "SEG-" + Date.now().toString(36).toUpperCase();
     await fetch(API + "/values/Seguimientos!A:E:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS",
       { method: "POST", headers: authJSON(), body: JSON.stringify({ values: [[segId, clienteActivo, fecha, tipo, desc]] }) });
-    // Actualizar "último seguimiento" del cliente si esta fecha es más reciente
+    // Actualizar "último seguimiento" y "última gestión" del cliente
     const c = clientes.find(x => x.id === clienteActivo);
     if (c) {
       const nuevoUltimo = (!c.ultimoSeguimiento || fecha > c.ultimoSeguimiento) ? fecha : c.ultimoSeguimiento;
-      if (nuevoUltimo !== c.ultimoSeguimiento) {
-        await fetch(API + "/values/Clientes!I" + c.fila + "?valueInputOption=USER_ENTERED", { method: "PUT", headers: authJSON(), body: JSON.stringify({ values: [[nuevoUltimo]] }) });
-        c.ultimoSeguimiento = nuevoUltimo;
-      }
+      await escribirCeldas(c.fila, [["I", nuevoUltimo], ["M", hoyISO()]]);
+      c.ultimoSeguimiento = nuevoUltimo; c.ultimaGestion = hoyISO();
     }
     segModal.classList.add("hidden");
     await cargarSeguimientos();
@@ -730,13 +745,13 @@ $("modal-save").addEventListener("click", async () => {
   const d = { nombre, telefono: $("f-telefono").value.trim(), email: $("f-email").value.trim(), estado: $("f-estado").value, origen: $("f-origen").value.trim(), etiquetas: $("f-etiquetas").value.trim(), notas: $("f-notas").value.trim() };
   try {
     if (editando) {
-      const row = [editando.id, d.nombre, d.telefono, d.email, d.estado, d.origen, d.etiquetas, editando.fechaCreacion || hoyISO(), editando.ultimoSeguimiento || "", d.notas];
-      const r = await fetch(API + "/values/Clientes!A" + editando.fila + ":J" + editando.fila + "?valueInputOption=USER_ENTERED", { method: "PUT", headers: authJSON(), body: JSON.stringify({ values: [row] }) });
+      const row = [editando.id, d.nombre, d.telefono, d.email, d.estado, d.origen, d.etiquetas, editando.fechaCreacion || hoyISO(), editando.ultimoSeguimiento || "", d.notas, editando.proximaAccion || "", editando.proximaFecha || "", hoyISO()];
+      const r = await fetch(API + "/values/Clientes!A" + editando.fila + ":M" + editando.fila + "?valueInputOption=USER_ENTERED", { method: "PUT", headers: authJSON(), body: JSON.stringify({ values: [row] }) });
       const j = await r.json(); if (j.error) throw new Error(j.error.message);
     } else {
       const id = "CLI-" + Date.now().toString(36).toUpperCase();
-      const row = [id, d.nombre, d.telefono, d.email, d.estado, d.origen, d.etiquetas, hoyISO(), "", d.notas];
-      const r = await fetch(API + "/values/Clientes!A:J:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS", { method: "POST", headers: authJSON(), body: JSON.stringify({ values: [row] }) });
+      const row = [id, d.nombre, d.telefono, d.email, d.estado, d.origen, d.etiquetas, hoyISO(), "", d.notas, "", "", hoyISO()];
+      const r = await fetch(API + "/values/Clientes!A:M:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS", { method: "POST", headers: authJSON(), body: JSON.stringify({ values: [row] }) });
       const j = await r.json(); if (j.error) throw new Error(j.error.message);
     }
     modal.classList.add("hidden");
@@ -802,9 +817,9 @@ $("import-run").addEventListener("click", async () => {
   if (csvContactos.length === 0) return;
   const btn = $("import-run"); btn.disabled = true; btn.textContent = "Importando…"; $("import-error").textContent = "";
   const base = Date.now().toString(36).toUpperCase();
-  const rows = csvContactos.map((c, i) => ["CLI-" + base + "-" + i, c.nombre, c.telefono, c.correo, "Lead no calificado", "Importado CSV", "", hoyISO(), "", ""]);
+  const rows = csvContactos.map((c, i) => ["CLI-" + base + "-" + i, c.nombre, c.telefono, c.correo, "Lead no calificado", "Importado CSV", "", hoyISO(), "", "", "", "", hoyISO()]);
   try {
-    const r = await fetch(API + "/values/Clientes!A:J:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS", { method: "POST", headers: authJSON(), body: JSON.stringify({ values: rows }) });
+    const r = await fetch(API + "/values/Clientes!A:M:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS", { method: "POST", headers: authJSON(), body: JSON.stringify({ values: rows }) });
     const j = await r.json(); if (j.error) throw new Error(j.error.message);
     importModal.classList.add("hidden");
     await cargarClientes(); renderOrigenFilter(); renderDashboard(); render();
@@ -821,6 +836,20 @@ function diffDias(desdeISO, hastaISO){ return Math.round((pd(hastaISO) - pd(desd
 function restarDias(iso, n){ const d=pd(iso); d.setDate(d.getDate()-n); const z=x=>String(x).padStart(2,"0"); return d.getFullYear()+"-"+z(d.getMonth()+1)+"-"+z(d.getDate()); }
 function fechaLarga(){ const meses=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"]; const dias=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"]; const d=new Date(); return dias[d.getDay()]+", "+d.getDate()+" de "+meses[d.getMonth()]+" de "+d.getFullYear(); }
 function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
+
+/* Fecha de la última gestión: si no hay registro explícito, usa la más reciente
+   entre último seguimiento y fecha de creación (para clientes antiguos). */
+function gestionEfectiva(c){
+  return c.ultimaGestion || [c.ultimoSeguimiento, c.fechaCreacion].filter(Boolean).sort().pop() || "";
+}
+/* Escribe varias celdas de la fila de un cliente en una sola llamada.
+   pares = [["E","Cliente"], ["M","2026-07-02"]] */
+async function escribirCeldas(fila, pares){
+  const data = pares.map(([col, val]) => ({ range: "Clientes!" + col + fila, values: [[val]] }));
+  const r = await fetch(API + "/values:batchUpdate", { method: "POST", headers: authJSON(),
+    body: JSON.stringify({ valueInputOption: "USER_ENTERED", data }) });
+  const d = await r.json(); if (d.error) throw new Error(d.error.message);
+}
 </script>
 </body>
 </html>
